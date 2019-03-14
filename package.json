@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Modify JavaScript code, generate source map for the modification.",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "tokenize.js"
+  ],
   "scripts": {
     "lint": "eslint index.js test/",
     "test": "tape \"test/*.js\"",
