@@ -12,6 +12,7 @@
     "test": "tape \"test/*.js\"",
     "pretest": "npm run lint",
     "version": "standard-changelog && git add CHANGELOG.md",
+    "preversion": "npm test",
     "postversion": "git push && git push --tags && npm publish",
     "coverage": "nyc --reporter=lcov tape \"test/*.js\""
   },
