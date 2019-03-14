@@ -1,0 +1,38 @@
+{
+  "name": "modify-code",
+  "version": "0.0.1",
+  "description": "Modify JavaScript code, generate source map for the modification.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint index.js test/",
+    "test": "tape \"test/*.js\"",
+    "pretest": "npm run lint",
+    "version": "standard-changelog && git add CHANGELOG.md",
+    "postversion": "git push && git push --tags && npm publish",
+    "coverage": "nyc --reporter=lcov tape \"test/*.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dumberjs/modify-code.git"
+  },
+  "keywords": [
+    "sourcemap"
+  ],
+  "author": "Chunpeng Huo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dumberjs/modify-code/issues"
+  },
+  "homepage": "https://github.com/dumberjs/modify-code#readme",
+  "dependencies": {
+    "esprima": "^4.0.1",
+    "source-map": "^0.6.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.1",
+    "nyc": "^13.3.0",
+    "sourcemap-codec": "^1.4.4",
+    "standard-changelog": "^2.0.7",
+    "tape": "^4.10.1"
+  }
+}
