@@ -9,7 +9,6 @@ module.exports = function(code) {
 
   for (; i < ii; i++) {
     token = {
-      type: tokens[i].type,
       value: tokens[i].value,
       start: tokens[i].range[0],
       end: tokens[i].range[1],

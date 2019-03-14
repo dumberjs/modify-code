@@ -7,8 +7,22 @@ module.exports = function(code, filePath) {
   var tokens = tokenize(code);
   var mutations = [];
 
+  function checkIndex(idx) {
+    if (typeof idx !== 'number' || idx < 0) {
+      throw new Error('index: ' + JSON.stringify(idx) + ' is not a valid index');
+    }
+    if (idx > code.length) {
+      throw new Error('index: ' + idx + ' is out of range of code length: ' + code.length);
+    }
+  }
+
   function replace(start, end, str) {
     var existing;
+    checkIndex(start);
+    checkIndex(end);
+    if (end < start) {
+      throw new Error('end-index: ' + end + ' cannot be smaller than start-index: ' + start);
+    }
     if (start === end) {
       // allow multiple insertion to same location
       existing = mutations.find(function(m) {
@@ -48,7 +62,6 @@ module.exports = function(code, filePath) {
 
     for (; i < ii; i++) {
       mutation = mutations[i];
-      if (mutation.end > code.length) complain(mutation);
 
       if (!tokens[ti]) {
         // reached end
@@ -56,8 +69,9 @@ module.exports = function(code, filePath) {
         if (transformedTokens.length && transformedTokens[transformedTokens.length - 1].start <= mutation.start) {
           throw new Error('does not allow mutating same token again. Token affected: ' +
             JSON.stringify(transformedTokens[transformedTokens.length - 1].value));
+        } else {
+          panic(mutation);
         }
-        complain(mutation);
       } else {
         // move to current affected token
         while (tokens[ti] && tokens[ti].end <= mutation.start) {
@@ -79,17 +93,22 @@ module.exports = function(code, filePath) {
           // insertion in this token
           offset = mutation.start - tokens[ti].start;
           newValue = tokens[ti].value.slice(0, offset) + mutation.value + tokens[ti].value.slice(offset);
-          transformedTokens.push({value: newValue, type: tokens[ti].type, start: tokens[ti].start, end: tokens[ti].end});
+          transformedTokens.push({
+            value: newValue,
+            start: tokens[ti].start,
+            end: tokens[ti].end,
+            line: tokens[ti].line,
+            column: tokens[ti].column
+          });
           ti++;
         }
       } else {
         // a replacement
-        if (!tokens[ti]) complain(mutation);
+        if (!tokens[ti]) panic(mutation);
 
         // merge tokens if replacement affects multiple tokens
         token = {
           value: tokens[ti].value,
-          type: tokens[ti].type,
           start: tokens[ti].start,
           end: tokens[ti].end,
           line: tokens[ti].line,
@@ -97,9 +116,8 @@ module.exports = function(code, filePath) {
         };
         while (token.end < mutation.end) {
           ti++;
-          if (!tokens[ti]) complain(mutation);
+          if (!tokens[ti]) panic(mutation);
           token.value = token.value + tokens[ti].value;
-          token.type = token.type || tokens[ti].type; // valid type will generate a sourcemap mapping
           token.end = tokens[ti].end;
         }
 
@@ -137,6 +155,6 @@ module.exports = function(code, filePath) {
   return modifyCode;
 };
 
-function complain(mutation) {
-  throw new Error('out of range mutation: start=' + mutation.start + ' end=' + mutation.end + ' str=' + mutation.value);
+function panic(mutation) {
+  throw new Error('Panic! mutation: start=' + mutation.start + ' end=' + mutation.end + ' str=' + mutation.value);
 }
