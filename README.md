@@ -1,4 +1,4 @@
-# modify-code
+# modify-code [![Build Status](https://travis-ci.org/dumberjs/modify-code.svg?branch=master)](https://travis-ci.org/dumberjs/modify-code)
 
 Modify JavaScript code, generate source map for the modification. Inspired by [magic-string](https://github.com/Rich-Harris/magic-string).
 
