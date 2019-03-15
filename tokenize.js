@@ -3,7 +3,7 @@ var esprima = require('esprima');
 // esprima tokens only contain essential tokens, we fill up gaps in between
 // so that we can reproduce the full code string.
 module.exports = function(code) {
-  var lastToken = {end: 0};
+  var lastToken = {start: 0, end: 0, line: 1, column: 0};
   var tokens = esprima.tokenize(code, {range: true, loc: true});
   var i = 0, ii = tokens.length, fullTokens = [], token;
 
@@ -21,7 +21,9 @@ module.exports = function(code) {
       fullTokens.push({
         value: code.slice(lastToken.end, token.start),
         start: lastToken.end,
-        end: token.start
+        end: token.start,
+        line: lastToken.line,
+        column: lastToken.column + lastToken.end - lastToken.start
       });
     }
 
@@ -34,7 +36,9 @@ module.exports = function(code) {
     fullTokens.push({
       value: code.slice(lastToken.end),
       start: lastToken.end,
-      end: code.length
+      end: code.length,
+      line: lastToken.line,
+      column: lastToken.column + lastToken.end - lastToken.start
     });
   }
 

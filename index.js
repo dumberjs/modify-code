@@ -56,7 +56,7 @@ module.exports = function(code, filePath) {
   };
   modifyCode.transform = function() {
     var i = 0, ti = 0, ii = mutations.length, transformedTokens = [];
-    var mutation, newValue, offset, offset2, token;
+    var mutation, newValue, offset, offset2, token, lastToken;
 
     mutations.sort(function(a, b) {return a.start - b.start;});
 
@@ -83,8 +83,23 @@ module.exports = function(code, filePath) {
       if (mutation.start === mutation.end) {
         // an insertion
         if (!tokens[ti] || tokens[ti].start === mutation.start) {
-          // append or prepend
-          transformedTokens.push({value: mutation.value});
+          if (!tokens[ti]) {
+            // append
+            lastToken = tokens[ti - 1];
+            transformedTokens.push({
+              value: mutation.value,
+              line: lastToken ? lastToken.line : 1,
+              column: lastToken ? (lastToken.column + lastToken.end - lastToken.start) : 0
+            });
+          } else {
+            // prepend or insert
+            transformedTokens.push({
+              value: mutation.value,
+              line: tokens[ti].line,
+              column: tokens[ti].column
+            });
+          }
+
           if (tokens[ti]) {
             transformedTokens.push(tokens[ti]);
             ti++;
@@ -134,14 +149,8 @@ module.exports = function(code, filePath) {
       ti++;
     }
 
-    // console.log('transformedTokens', transformedTokens);
-
     var node = new SourceNode(null, null, null, transformedTokens.map(function(t) {
-      if (t.line) {
-        return new SourceNode(t.line, t.column, filePath, t.value);
-      } else {
-        return t.value; // no source map needed
-      }
+      return new SourceNode(t.line, t.column, filePath, t.value);
     }));
 
     var result = node.toStringWithSourceMap({file: filePath});

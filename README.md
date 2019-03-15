@@ -43,7 +43,7 @@ const result = m.transform();
     version: 3,
     sources: [ 'optional-file-name.js' ],
     names: [],
-    mappings: ';AAAA,G,CAAI,C,CAAE,C,CAAE,OAAO,CAAC,QAAG,CAAC,C,YACpB,OAAO,CAAC,G,CAAI,C,CAAE,CAAC,C',
+    mappings: 'AAAA;AAAA,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,OAAO,CAAC,QAAG,CAAC,CACpB,mBAAO,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,CAAE',
     file: 'optional-file-name.js',
     sourcesContent: [ 'var a = require("a");\nexports.foo = a;\n' ]
   }
