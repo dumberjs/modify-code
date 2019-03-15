@@ -1,3 +1,12 @@
+## [0.1.2](https://github.com/dumberjs/modify-code/compare/v0.1.1...v0.1.2) (2019-03-15)
+
+
+### Bug Fixes
+
+* avoid mapping to null source ([4076d3f](https://github.com/dumberjs/modify-code/commit/4076d3f))
+
+
+
 ## [0.1.1](https://github.com/dumberjs/modify-code/compare/v0.1.0...v0.1.1) (2019-03-15)
 
 
