@@ -9,12 +9,14 @@
   ],
   "scripts": {
     "lint": "eslint index.js test/",
-    "test": "tape \"test/*.js\"",
+    "test": "npm run node-test && npm run browser-test",
     "pretest": "npm run lint",
     "version": "standard-changelog && git add CHANGELOG.md",
     "preversion": "npm test",
     "postversion": "git push && git push --tags && npm publish",
-    "coverage": "nyc --reporter=lcov tape \"test/*.js\""
+    "coverage": "nyc --reporter=lcov tape \"test/*.js\"",
+    "node-test": "tape \"test/*.js\"",
+    "browser-test": "browserify test/modify-code.spec.js test/tokenize.spec.js | tape-run"
   },
   "repository": {
     "type": "git",
@@ -34,10 +36,12 @@
     "source-map": "^0.6.1"
   },
   "devDependencies": {
+    "browserify": "^16.2.3",
     "eslint": "^5.15.1",
     "nyc": "^13.3.0",
     "sourcemap-codec": "^1.4.4",
     "standard-changelog": "^2.0.7",
-    "tape": "^4.10.1"
+    "tape": "^4.10.1",
+    "tape-run": "^5.0.0"
   }
 }
