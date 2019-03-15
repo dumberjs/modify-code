@@ -241,11 +241,11 @@ test('modify-code does two replacement, each for one token', function(t) {
 });
 
 test('modify-code does two replacement, each for one token, in different order', function(t) {
-  var m = modify('require("a");\nrequire("b");\n', 'some.js');
-  // replace "b" to "bar";
-  m.replace(23, 24, 'bar');
-  // replace "a" to "foo";
-  m.replace(9, 10, 'foo');
+  var m = modify('require("a");\nrequire("b");\n', 'some.js')
+  // replace "b" to "bar"
+  .replace(23, 24, 'bar')
+  // replace "a" to "foo"
+  .replace(9, 10, 'foo');
 
   t.deepEqual(m.transform(), {
     code: 'require("foo");\nrequire("bar");\n',
@@ -415,5 +415,37 @@ test('modify-code complains about mutation on same token', function(t) {
   m.insert(5, '-');
   m.insert(6, '-');
   t.throws(function() { m.transform(); });
+  t.end();
+});
+
+test('modify-code can chain mutation calls', function(t) {
+  var result = modify('var a = require("a");\nexports.foo = a;\n', 'optional-file-name.js')
+    // modify dependency "a" into "mock-a"
+    .replace(17, 18, 'mock-a')
+    // modify exported name "foo" to "bar"
+    .replace(30, 33, 'bar')
+    // remove line breaks
+    .delete(21, 22)
+    .delete(38, 39)
+    // insert a statement after first line
+    .insert(22, "a = '#' + a;")
+    // prepend some content at the beginning
+    .prepend('/* modified */\n')
+    // append some content at the end
+    .append('/* end of modified */\n')
+    // generate code and sourcemap
+    .transform();
+
+  t.deepEqual(result, {
+    code: '/* modified */\nvar a = require("mock-a");a = \'#\' + a;exports.bar = a;/* end of modified */\n',
+    map: {
+      version: 3,
+      sources: [ 'optional-file-name.js' ],
+      names: [],
+      mappings: ';AAAA,G,CAAI,C,CAAE,C,CAAE,OAAO,CAAC,QAAG,CAAC,C,YACpB,OAAO,CAAC,G,CAAI,C,CAAE,CAAC,C',
+      file: 'optional-file-name.js',
+      sourcesContent: [ 'var a = require("a");\nexports.foo = a;\n' ]
+    }
+  });
   t.end();
 });

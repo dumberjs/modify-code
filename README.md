@@ -14,6 +14,7 @@ Following code example showed all methods.
 2. You don't need to apply updated index number in second mutation due to the code change done by first mutation.
 3. All mutation calls are kind of independent, you can reorder the mutations, the final result would not change.
 4. Simpler than magic-string, modify-code doesn't allow multiple mutations to touch same token (code was tokenized by esprima) twice.
+5. calls can be chained together. `const result = modifyCode(...).replace(...).prepend(...).transform()`.
 
 ```js
 const modifyCode = require('modify-code');
