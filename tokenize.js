@@ -1,6 +1,6 @@
 var esprima = require('esprima');
 
-// esprima tokens only has essential tokens, we fill up gaps in between
+// esprima tokens only contain essential tokens, we fill up gaps in between
 // so that we can reproduce the full code string.
 module.exports = function(code) {
   var lastToken = {end: 0};
