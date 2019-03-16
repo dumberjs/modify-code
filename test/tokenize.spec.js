@@ -5,6 +5,14 @@ function tokensToCode(tokens) {
   return tokens.map(function(t) {return t.value;}).join('');
 }
 
+test('tokenize supports empty input', function(t) {
+  var code = '';
+  var tokens = tokenize(code);
+  t.deepEqual(tokens, []);
+  t.equal(tokensToCode(tokens), code);
+  t.end();
+});
+
 test('tokenize outputs tokens', function(t) {
   var code = 'var a = 1;';
   var tokens = tokenize(code);

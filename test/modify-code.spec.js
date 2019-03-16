@@ -4,6 +4,43 @@ var smc = require('sourcemap-codec');
 // var decode = smc.decode;
 var encode = smc.encode;
 
+test('modify-code supports empty code', function(t) {
+  var m = modify('');
+  t.deepEqual(m.transform(), {
+    code: '',
+    map: {
+      version: 3,
+      sources: [],
+      sourcesContent: [],
+      file: 'file.js',
+      names: [],
+      mappings: ''
+    }
+  })
+  t.end();
+});
+
+test('modify-code supports mutating empty code', function(t) {
+  var m = modify('');
+  m.append('/* hello */');
+  t.deepEqual(m.transform(), {
+    code: '/* hello */',
+    map: {
+      version: 3,
+      sources: ['file.js'],
+      sourcesContent: [''],
+      file: 'file.js',
+      names: [],
+      mappings: encode([
+        [
+          [0, 0, 0, 0]
+        ]
+      ])
+    }
+  })
+  t.end();
+});
+
 test('modify-code outputs identity map', function(t) {
   var m = modify('var a = 1;');
   t.deepEqual(m.transform(), {
