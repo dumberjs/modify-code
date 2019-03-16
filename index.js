@@ -55,106 +55,109 @@ module.exports = function(code, filePath) {
     return replace(start, end, '');
   };
   modifyCode.transform = function() {
-    var i = 0, ti = 0, ii = mutations.length, transformedTokens = [];
-    var mutation, newValue, offset, offset2, token, lastToken;
+    var i = 0, ti = 0, ii = mutations.length, newTokens = [];
+    var mutation, newValue, offset, offset2, merged;
+
+    function advance() { if (ti < tokens.length) ti++; }
+    function token() { return tokens[ti]; }
+    function prev() { return tokens[ti - 1]; }
 
     mutations.sort(function(a, b) {return a.start - b.start;});
 
     for (; i < ii; i++) {
       mutation = mutations[i];
 
-      if (!tokens[ti]) {
-        // reached end
-      } else if (tokens[ti].start > mutation.start) {
-        if (transformedTokens.length && transformedTokens[transformedTokens.length - 1].start <= mutation.start) {
+      if (token() && token().start > mutation.start) {
+        if (newTokens.length && newTokens[newTokens.length - 1].start <= mutation.start) {
           throw new Error('does not allow mutating same token again. Token affected: ' +
-            JSON.stringify(transformedTokens[transformedTokens.length - 1].value));
+            JSON.stringify(newTokens[newTokens.length - 1].value));
         } else {
           panic(mutation);
         }
       } else {
         // move to current affected token
-        while (tokens[ti] && tokens[ti].end <= mutation.start) {
-          transformedTokens.push(tokens[ti]);
-          ti++;
+        while (token() && token().end <= mutation.start) {
+          newTokens.push(token());
+          advance();
         }
       }
 
       if (mutation.start === mutation.end) {
         // an insertion
-        if (!tokens[ti] || tokens[ti].start === mutation.start) {
-          if (!tokens[ti]) {
-            // append
-            lastToken = tokens[ti - 1];
-            transformedTokens.push({
-              value: mutation.value,
-              line: lastToken ? lastToken.line : 1,
-              column: lastToken ? (lastToken.column + lastToken.end - lastToken.start) : 0
-            });
-          } else {
-            // prepend or insert
-            transformedTokens.push({
-              value: mutation.value,
-              line: tokens[ti].line,
-              column: tokens[ti].column
-            });
-          }
-
-          if (tokens[ti]) {
-            transformedTokens.push(tokens[ti]);
-            ti++;
-          }
+        if (!token()) {
+          // append
+          newTokens.push({
+            value: mutation.value,
+            start: mutation.start,
+            end: mutation.end,
+            line: prev() ? prev().endLine : 1,
+            column: prev() ? prev().endColumn : 0
+          });
+        } else if (token().start === mutation.start) {
+          // prepend or insert
+          newTokens.push({
+            value: mutation.value,
+            start: mutation.start,
+            end: mutation.end,
+            line: token().line,
+            column: token().column
+          });
+          newTokens.push(token());
+          advance();
         } else {
           // insertion in this token
-          offset = mutation.start - tokens[ti].start;
-          newValue = tokens[ti].value.slice(0, offset) + mutation.value + tokens[ti].value.slice(offset);
-          transformedTokens.push({
+          offset = mutation.start - token().start;
+          newValue = token().value.slice(0, offset) + mutation.value + token().value.slice(offset);
+          newTokens.push({
             value: newValue,
-            start: tokens[ti].start,
-            end: tokens[ti].end,
-            line: tokens[ti].line,
-            column: tokens[ti].column
+            start: token().start,
+            end: token().end,
+            line: token().line,
+            column: token().column
           });
-          ti++;
+          advance();
         }
       } else {
         // a replacement
-        if (!tokens[ti]) panic(mutation);
+        if (!token()) panic(mutation);
 
         // merge tokens if replacement affects multiple tokens
-        token = {
-          value: tokens[ti].value,
-          start: tokens[ti].start,
-          end: tokens[ti].end,
-          line: tokens[ti].line,
-          column: tokens[ti].column
+        merged = {
+          value: token().value,
+          start: token().start,
+          end: token().end,
+          line: token().line,
+          column: token().column
         };
-        while (token.end < mutation.end) {
-          ti++;
-          if (!tokens[ti]) panic(mutation);
-          token.value = token.value + tokens[ti].value;
-          token.end = tokens[ti].end;
+
+        while (merged.end < mutation.end) {
+          advance();
+          if (!token()) panic(mutation);
+          merged.value = merged.value + token().value;
+          merged.end = token().end;
         }
 
-        offset = mutation.start - token.start;
-        offset2 = mutation.end - token.start;
-        token.value = token.value.slice(0, offset) + mutation.value + token.value.slice(offset2);
-        transformedTokens.push(token);
-        ti++;
+        offset = mutation.start - merged.start;
+        offset2 = mutation.end - merged.start;
+        merged.value = merged.value.slice(0, offset) + mutation.value + merged.value.slice(offset2);
+        newTokens.push(merged);
+        advance();
       }
     }
 
-    while (ti < tokens.length) {
-      transformedTokens.push(tokens[ti]);
-      ti++;
+    // the rest unaffected tokens
+    while (token()) {
+      newTokens.push(token());
+      advance();
     }
 
-    var node = new SourceNode(null, null, null, transformedTokens.map(function(t) {
+    var node = new SourceNode(null, null, null, newTokens.map(function(t) {
       return new SourceNode(t.line, t.column, filePath, t.value);
     }));
 
     var result = node.toStringWithSourceMap({file: filePath});
     result.map.setSourceContent(filePath, code);
+
     return {
       code: result.code,
       map: JSON.parse(result.map.toString())
