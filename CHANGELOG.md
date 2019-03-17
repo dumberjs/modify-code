@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/dumberjs/modify-code/compare/v0.1.3...v0.2.0) (2019-03-17)
+
+
+### Features
+
+* reduce source map size by merging white spaces and mutations into existing tokens ([5eafbd7](https://github.com/dumberjs/modify-code/commit/5eafbd7))
+
+
+
 ## [0.1.3](https://github.com/dumberjs/modify-code/compare/v0.1.2...v0.1.3) (2019-03-16)
 
 
