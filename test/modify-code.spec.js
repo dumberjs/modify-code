@@ -41,6 +41,34 @@ test('modify-code supports mutating empty code', function(t) {
   t.end();
 });
 
+test('modify-code supports mutating empty code, case2', function(t) {
+  var m = modify('/* empty */');
+  m.prepend('define(function() {\n');
+  m.append('\n});\n');
+  t.deepEqual(m.transform(), {
+    code: 'define(function() {\n/* empty */\n});\n',
+    map: {
+      version: 3,
+      sources: ['file.js'],
+      sourcesContent: ['/* empty */'],
+      file: 'file.js',
+      names: [],
+      mappings: encode([
+        [
+          [0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0]
+        ]
+      ])
+    }
+  })
+  t.end();
+});
+
 test('modify-code outputs identity map', function(t) {
   var m = modify('var a = 1;');
   t.deepEqual(m.transform(), {

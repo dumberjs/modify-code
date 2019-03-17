@@ -35,6 +35,15 @@ module.exports = function(code) {
     // merge tailing gap (e.g. white spaces, comments) into pervious token
     lastToken.value += code.slice(lastToken.end, code.length);
     lastToken.end = code.length;
+  } else if (ii === 0 && code.length) {
+    // code contains non-empty string but no valid js like /* empty */
+    fullTokens.push({
+      value: code,
+      start: 0,
+      end: code.length,
+      line: 1,
+      column: 0
+    });
   }
 
   return fullTokens;
