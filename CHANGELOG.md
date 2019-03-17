@@ -1,3 +1,12 @@
+## [0.2.1](https://github.com/dumberjs/modify-code/compare/v0.2.0...v0.2.1) (2019-03-17)
+
+
+### Bug Fixes
+
+* fix tokenization on non-empty code with no js (only comments or white spaces) ([850ca3e](https://github.com/dumberjs/modify-code/commit/850ca3e))
+
+
+
 # [0.2.0](https://github.com/dumberjs/modify-code/compare/v0.1.3...v0.2.0) (2019-03-17)
 
 
