@@ -54,11 +54,8 @@ test('modify-code outputs identity map', function(t) {
       mappings: encode([
         [
           [0, 0, 0, 0],
-          [3, 0, 0, 3],
           [4, 0, 0, 4],
-          [5, 0, 0, 5],
           [6, 0, 0, 6],
-          [7, 0, 0, 7],
           [8, 0, 0, 8],
           [9, 0, 0, 9]
         ]
@@ -82,11 +79,8 @@ test('modify-code replaces one token', function(t) {
       mappings: encode([
         [
           [0, 0, 0, 0],
-          [3, 0, 0, 3],
           [4, 0, 0, 4],
-          [9, 0, 0, 5],
           [10, 0, 0, 6],
-          [11, 0, 0, 7],
           [12, 0, 0, 8],
           [13, 0, 0, 9]
         ]
@@ -110,11 +104,8 @@ test('modify-code deletes one token', function(t) {
       mappings: encode([
         [
           [0, 0, 0, 0],
-          [3, 0, 0, 3],
           [4, 0, 0, 4],
-          [5, 0, 0, 5],
           [6, 0, 0, 6],
-          [7, 0, 0, 7],
           [8, 0, 0, 8]
         ]
       ])
@@ -125,9 +116,9 @@ test('modify-code deletes one token', function(t) {
 
 test('modify-code deletes multiple tokens', function(t) {
   var m = modify('var a = 1;');
-  m.delete(0, 4);
+  m.delete(0, 8);
   t.deepEqual(m.transform(), {
-    code: 'a = 1;',
+    code: '1;',
     map: {
       version: 3,
       sources: ['file.js'],
@@ -136,12 +127,8 @@ test('modify-code deletes multiple tokens', function(t) {
       names: [],
       mappings: encode([
         [
-          [0, 0, 0, 4],
-          [1, 0, 0, 5],
-          [2, 0, 0, 6],
-          [3, 0, 0, 7],
-          [4, 0, 0, 8],
-          [5, 0, 0, 9]
+          [0, 0, 0, 8],
+          [1, 0, 0, 9]
         ]
       ])
     }
@@ -163,11 +150,8 @@ test('modify-code prepends content', function(t) {
       mappings: encode([
         [
           [0, 0, 0, 0],
-          [11, 0, 0, 3],
           [12, 0, 0, 4],
-          [13, 0, 0, 5],
           [14, 0, 0, 6],
-          [15, 0, 0, 7],
           [16, 0, 0, 8],
           [17, 0, 0, 9]
         ]
@@ -192,11 +176,8 @@ test('modify-code prepends multiple contents', function(t) {
       mappings: encode([
         [
           [0, 0, 0, 0],
-          [19, 0, 0, 3],
           [20, 0, 0, 4],
-          [21, 0, 0, 5],
           [22, 0, 0, 6],
-          [23, 0, 0, 7],
           [24, 0, 0, 8],
           [25, 0, 0, 9]
         ]
@@ -220,14 +201,10 @@ test('modify-code appends content', function(t) {
       mappings: encode([
         [
           [0, 0, 0, 0],
-          [3, 0, 0, 3],
           [4, 0, 0, 4],
-          [5, 0, 0, 5],
           [6, 0, 0, 6],
-          [7, 0, 0, 7],
           [8, 0, 0, 8],
-          [9, 0, 0, 9],
-          [10, 0, 0, 10]
+          [9, 0, 0, 9]
         ]
       ])
     }
@@ -250,14 +227,10 @@ test('modify-code appends multiple contents', function(t) {
       mappings: encode([
         [
           [0, 0, 0, 0],
-          [3, 0, 0, 3],
           [4, 0, 0, 4],
-          [5, 0, 0, 5],
           [6, 0, 0, 6],
-          [7, 0, 0, 7],
           [8, 0, 0, 8],
-          [9, 0, 0, 9],
-          [10, 0, 0, 10],
+          [9, 0, 0, 9]
         ]
       ])
     }
@@ -286,16 +259,14 @@ test('modify-code does two replacement, each for one token', function(t) {
           [7, 0, 0, 7],
           [8, 0, 0, 8],
           [13, 0, 0, 11],
-          [14, 0, 0, 12],
-          [15, 0, 0, 13]
+          [14, 0, 0, 12]
         ],
         [
           [0, 0, 1, 0],
           [7, 0, 1, 7],
           [8, 0, 1, 8],
           [13, 0, 1, 11],
-          [14, 0, 1, 12],
-          [15, 0, 1, 13]
+          [14, 0, 1, 12]
         ]
       ])
     }
@@ -324,16 +295,14 @@ test('modify-code does two replacement, each for one token, in different order',
           [7, 0, 0, 7],
           [8, 0, 0, 8],
           [13, 0, 0, 11],
-          [14, 0, 0, 12],
-          [15, 0, 0, 13]
+          [14, 0, 0, 12]
         ],
         [
           [0, 0, 1, 0],
           [7, 0, 1, 7],
           [8, 0, 1, 8],
           [13, 0, 1, 11],
-          [14, 0, 1, 12],
-          [15, 0, 1, 13]
+          [14, 0, 1, 12]
         ]
       ])
     }
@@ -362,13 +331,11 @@ test('modify-code replaces across multiple tokens', function(t) {
           [7, 0, 0, 7],
           [8, 0, 0, 8],
           [13, 0, 0, 11],
-          [14, 0, 0, 12],
-          [15, 0, 0, 13]
+          [14, 0, 0, 12]
         ],
         [
           [0, 0, 1, 0],
-          [9, 0, 1, 12],
-          [10, 0, 1, 13]
+          [9, 0, 1, 12]
         ]
       ])
     }
@@ -395,16 +362,15 @@ test('modify-code inserts content', function(t) {
           [7, 0, 0, 7],
           [8, 0, 0, 8],
           [11, 0, 0, 11],
-          [12, 0, 0, 12],
-          [13, 0, 0, 13]
+          [12, 0, 0, 12]
         ],
         [
-          [0, 0, 1, 0],
+          [0, 0, 0, 12],
+          [8, 0, 1, 0],
           [15, 0, 1, 7],
           [16, 0, 1, 8],
           [19, 0, 1, 11],
-          [20, 0, 1, 12],
-          [21, 0, 1, 13]
+          [20, 0, 1, 12]
         ]
       ])
     }
@@ -431,16 +397,14 @@ test('modify-code inserts content inside a token', function(t) {
           [7, 0, 0, 7],
           [8, 0, 0, 8],
           [11, 0, 0, 11],
-          [12, 0, 0, 12],
-          [13, 0, 0, 13]
+          [12, 0, 0, 12]
         ],
         [
           [0, 0, 1, 0],
           [7, 0, 1, 7],
           [8, 0, 1, 8],
           [15, 0, 1, 11],
-          [16, 0, 1, 12],
-          [17, 0, 1, 13]
+          [16, 0, 1, 12]
         ]
       ])
     }
@@ -505,7 +469,27 @@ test('modify-code can chain mutation calls', function(t) {
       version: 3,
       sources: [ 'optional-file-name.js' ],
       names: [],
-      mappings: 'AAAA;AAAA,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,OAAO,CAAC,QAAG,CAAC,CACpB,mBAAO,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC',
+      mappings: encode([
+        [
+          [0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0],
+          [4, 0, 0, 4],
+          [6, 0, 0, 6],
+          [8, 0, 0, 8],
+          [15, 0, 0, 15],
+          [16, 0, 0, 16],
+          [24, 0, 0, 19],
+          [25, 0, 0, 20],
+          [26, 0, 1, 0],
+          [45, 0, 1, 7],
+          [46, 0, 1, 8],
+          [50, 0, 1, 12],
+          [52, 0, 1, 14],
+          [53, 0, 1, 15],
+        ]
+      ]),
       file: 'optional-file-name.js',
       sourcesContent: [ 'var a = require("a");\nexports.foo = a;\n' ]
     }
@@ -537,7 +521,27 @@ test('modify-code can chain mutation calls, in different order', function(t) {
       version: 3,
       sources: [ 'optional-file-name.js' ],
       names: [],
-      mappings: 'AAAA;AAAA,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC,OAAO,CAAC,QAAG,CAAC,CACpB,mBAAO,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,CAAC',
+      mappings: encode([
+        [
+          [0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0],
+          [4, 0, 0, 4],
+          [6, 0, 0, 6],
+          [8, 0, 0, 8],
+          [15, 0, 0, 15],
+          [16, 0, 0, 16],
+          [24, 0, 0, 19],
+          [25, 0, 0, 20],
+          [26, 0, 1, 0],
+          [45, 0, 1, 7],
+          [46, 0, 1, 8],
+          [50, 0, 1, 12],
+          [52, 0, 1, 14],
+          [53, 0, 1, 15],
+        ]
+      ]),
       file: 'optional-file-name.js',
       sourcesContent: [ 'var a = require("a");\nexports.foo = a;\n' ]
     }
