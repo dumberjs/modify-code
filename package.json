@@ -37,11 +37,11 @@
   },
   "devDependencies": {
     "browserify": "^16.2.3",
-    "eslint": "^5.15.1",
-    "nyc": "^13.3.0",
+    "eslint": "^5.16.0",
+    "nyc": "^14.1.1",
     "sourcemap-codec": "^1.4.4",
-    "standard-changelog": "^2.0.7",
-    "tape": "^4.10.1",
-    "tape-run": "^5.0.0"
+    "standard-changelog": "^2.0.11",
+    "tape": "^4.10.2",
+    "tape-run": "^6.0.0"
   }
 }
