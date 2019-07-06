@@ -4,6 +4,8 @@ Modify JavaScript code, generate source map for the modification. Inspired by [m
 
 Different from magic-string which either generates source map in resolution of line or char, modify-code generates source map in resolution of token (tokenized by [esprima](https://github.com/jquery/esprima)). The other difference is that modify-code has less features, for simplicity, it doesn't allow multiple mutations to touch same token.
 
+> Note, although esprima can not parse TypeScript source code, it can tokenize TypeScript source code without any issue. modify-code works for plain CommonJS code, or ESNext code, or TypeScript code.
+
 modify-code got two npm dependencies: `esprima` and `source-map@^0.6.1` (easier to run in browser), so the footprint is bigger than magic-string.
 
 ## Usage
