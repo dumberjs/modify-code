@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/dumberjs/modify-code/compare/v0.2.1...v0.3.0) (2019-07-06)
+
+
+### Features
+
+* add TypeScript typing definition ([56f3385](https://github.com/dumberjs/modify-code/commit/56f3385))
+
+
+
 ## [0.2.1](https://github.com/dumberjs/modify-code/compare/v0.2.0...v0.2.1) (2019-03-17)
 
 
