@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/dumberjs/modify-code/compare/v0.4.2...v0.5.0) (2019-07-13)
+
+
+### Features
+
+* switch from esprima to @babel/parser to support latest JS/TS/JSX syntax ([e88dfc9](https://github.com/dumberjs/modify-code/commit/e88dfc9))
+
+
+
 ## [0.4.2](https://github.com/dumberjs/modify-code/compare/v0.4.1...v0.4.2) (2019-07-13)
 
 
