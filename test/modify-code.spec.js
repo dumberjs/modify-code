@@ -1,5 +1,5 @@
 var test = require('tape');
-var modify = require('../index');
+var modify = require('../index').default;
 var smc = require('sourcemap-codec');
 // var decode = smc.decode;
 var encode = smc.encode;

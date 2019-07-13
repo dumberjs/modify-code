@@ -19,7 +19,11 @@ Following code example showed all methods.
 5. calls can be chained together. `const result = modifyCode(...).replace(...).prepend(...).transform()`.
 
 ```js
-const modifyCode = require('modify-code');
+// ESNext / TypeScript
+import modifyCode from 'modify-code';
+// CommonJS
+// const modifyCode = require('modify-code').default;
+
 // if optional-file-name is not provided, the default file name is "file.js"
 const m = modifyCode('var a = require("a");\nexports.foo = a;\n', 'optional-file-name.js');
 // modify dependency "a" into "mock-a"
