@@ -2,7 +2,7 @@ var tokenize = require('./tokenize');
 var SourceNode = require('source-map').SourceNode;
 
 exports.__esModule = true;
-exports.default = function(code, filePath) {
+exports['default'] = function(code, filePath) {
   // the file name to be used in sourcemap sources and file fields
   filePath = (filePath || 'file.js').replace(/\\/g, '/');
   var mutations = [];
