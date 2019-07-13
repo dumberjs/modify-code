@@ -1,19 +1,48 @@
-var esprima = require('esprima');
+var parser = require('@babel/parser');
 
 // esprima tokens only contain essential tokens, we fill up gaps in between
 // so that we can reproduce the full code string.
 module.exports = function(code) {
-  var tokens = esprima.tokenize(code, {range: true, loc: true});
+  var tokens = parser.parse(code, {sourceType: 'module', plugins: [
+    'jsx',
+    'typescript',
+    'asyncGenerators',
+    'bigInt',
+    'classProperties',
+    'classPrivateProperties',
+    'classPrivateMethods',
+    'decorators-legacy',
+    // ['decorators', {'decoratorsBeforeExport': true}],
+    'doExpressions',
+    'dynamicImport',
+    'exportDefaultFrom',
+    'exportNamespaceFrom',
+    'functionBind',
+    'functionSent',
+    'importMeta',
+    'logicalAssignment',
+    'nullishCoalescingOperator',
+    'numericSeparator',
+    'objectRestSpread',
+    'optionalCatchBinding',
+    'optionalChaining',
+    'partialApplication',
+    // ['pipelineOperator', {proposal: 'minimal'}],
+    'throwExpressions',
+  ], tokens: true}).tokens;
+
   var i = 0, ii = tokens.length, fullTokens = [], token, lastToken;
 
   for (; i < ii; i++) {
     token = {
-      value: tokens[i].value,
-      start: tokens[i].range[0],
-      end: tokens[i].range[1],
+      start: tokens[i].start,
+      end: tokens[i].end,
       line: tokens[i].loc.start.line,
       column: tokens[i].loc.start.column
     };
+
+    if (token.start === token.end) continue;
+    token.value = code.slice(token.start, token.end);
 
     if (i === 0) {
       if (token.start !== 0) {

@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/dumberjs/modify-code#readme",
   "dependencies": {
-    "esprima": "^4.0.1",
+    "@babel/parser": "^7.5.0",
     "source-map": "^0.6.1"
   },
   "devDependencies": {
