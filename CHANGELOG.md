@@ -1,3 +1,17 @@
+# [0.4.0](https://github.com/dumberjs/modify-code/compare/v0.3.2...v0.4.0) (2019-07-13)
+
+
+### Features
+
+* make it an ES module with default export ([00a0ac2](https://github.com/dumberjs/modify-code/commit/00a0ac2))
+
+
+### BREAKING CHANGES
+
+* the func is now on default export. This will make TypeScript happier.
+
+
+
 ## [0.3.2](https://github.com/dumberjs/modify-code/compare/v0.3.1...v0.3.2) (2019-07-13)
 
 
