@@ -1,3 +1,12 @@
+## [0.4.2](https://github.com/dumberjs/modify-code/compare/v0.4.1...v0.4.2) (2019-07-13)
+
+
+### Features
+
+* improve TypeScript typing ([302879b](https://github.com/dumberjs/modify-code/commit/302879b))
+
+
+
 ## [0.4.1](https://github.com/dumberjs/modify-code/compare/v0.4.0...v0.4.1) (2019-07-13)
 
 
