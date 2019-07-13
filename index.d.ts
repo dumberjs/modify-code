@@ -1,3 +1,4 @@
+import {RawSourceMap} from 'source-map';
 declare function modifyCode(code: string, filePath?: string): ModifyCode;
 export default modifyCode;
 
@@ -10,19 +11,7 @@ interface ModifyCode {
   transform(): ModifyCodeResult
 }
 
-interface ModifyCodeResult {
+export interface ModifyCodeResult {
   code: string,
-  map: SourceMap
-}
-
-interface SourceMap {
-  version: number,
-  // file, sources, sourcesContent are optional in spec,
-  // but ModifyCodeResult always have them.
-  file: string,
-  sources: string[],
-  sourcesContent: string[],
-  sourceRoot?: string,
-  names?: string[],
-  mappings: string
+  map: RawSourceMap
 }
