@@ -79,28 +79,27 @@ exports['default'] = function(code, filePath) {
   };
 
   modifyCode.transform = function() {
-    var i = 0, ti = 0, ii = mutations.length, newTokens = [];
-    var mutation, offset, offset2, merged, isInsertion;
+    var ms = compactMutations(mutations)
+    var i = 0, ti = 0, ii = ms.length, newTokens = [];
+    var m, offset, offset2, merged, isInsertion;
     var tokens = tokenize(code);
 
-    mutations.sort(function(a, b) {return a.start - b.start;});
-
     for (; i < ii; i++) {
-      mutation = mutations[i];
-      isInsertion = mutation.start === mutation.end;
+      m = ms[i];
+      isInsertion = m.start === m.end;
 
-      if (tokens[ti] && tokens[ti].start > mutation.start) {
-        if (newTokens.length && newTokens[newTokens.length - 1].start <= mutation.start) {
+      if (tokens[ti] && tokens[ti].start > m.start) {
+        if (newTokens.length && newTokens[newTokens.length - 1].start <= m.start) {
           throw new Error('does not allow mutating same token again. Token affected: ' +
             JSON.stringify(newTokens[newTokens.length - 1].value));
         } else {
-          panic(mutation);
+          panic(m);
         }
       } else {
         // move to current affected token
         while (tokens[ti] && (isInsertion ?
-          tokens[ti].end < mutation.start :
-          tokens[ti].end <= mutation.start // push replacement to next token
+          tokens[ti].end < m.start :
+          tokens[ti].end <= m.start // push replacement to next token
         )) {
           newTokens.push(tokens[ti]);
           ti++;
@@ -113,42 +112,42 @@ exports['default'] = function(code, filePath) {
           // this can only happen when
           // 1. empty code where tokens size is zero.
           // 2. append in the end
-          if (mutation.start === 0) {
+          if (m.start === 0) {
             newTokens.push({
-              value: mutation.value,
+              value: m.value,
               start: 0,
               end: 0,
               line: 1,
               column: 0
             });
-          } else if (newTokens.length && newTokens[newTokens.length - 1].end === mutation.start) {
-            newTokens[newTokens.length - 1].value += mutation.value;
+          } else if (newTokens.length && newTokens[newTokens.length - 1].end === m.start) {
+            newTokens[newTokens.length - 1].value += m.value;
           } else {
-            panic(mutation);
+            panic(m);
           }
         } else {
           // insertion in this token
-          offset = mutation.start - tokens[ti].start;
-          tokens[ti].value = tokens[ti].value.slice(0, offset) + mutation.value + tokens[ti].value.slice(offset);
+          offset = m.start - tokens[ti].start;
+          tokens[ti].value = tokens[ti].value.slice(0, offset) + m.value + tokens[ti].value.slice(offset);
           newTokens.push(tokens[ti]);
           ti++;
         }
       } else {
         // a replacement
-        if (!tokens[ti]) panic(mutation);
+        if (!tokens[ti]) panic(m);
 
         // merge tokens if replacement affects multiple tokens
         merged = tokens[ti];
-        while (merged.end < mutation.end) {
+        while (merged.end < m.end) {
           ti++;
-          if (!tokens[ti]) panic(mutation);
+          if (!tokens[ti]) panic(m);
           merged.value = merged.value + tokens[ti].value;
           merged.end = tokens[ti].end;
         }
 
-        offset = mutation.start - merged.start;
-        offset2 = mutation.end - merged.start;
-        merged.value = merged.value.slice(0, offset) + mutation.value + merged.value.slice(offset2);
+        offset = m.start - merged.start;
+        offset2 = m.end - merged.start;
+        merged.value = merged.value.slice(0, offset) + m.value + merged.value.slice(offset2);
         newTokens.push(merged);
         ti++;
       }
@@ -179,4 +178,36 @@ exports['default'] = function(code, filePath) {
 function panic(mutation) {
   throw new Error('Panic! mutation: start=' + mutation.start +
     ' end=' + mutation.end + ' str=' + mutation.value);
+}
+
+function compactMutations(mutations) {
+  var _ms = Array.from(mutations);
+
+  _ms.sort(function(a, b) {
+    var sdiff = a.start - b.start;
+    if (sdiff === 0) {
+      return a.end - b.end;
+    }
+    return sdiff;
+  });
+
+  var compact = [];
+  var i = 0, ii = _ms.length, lastOne, m;
+  for (; i < ii; i++) {
+    m = {
+      start: _ms[i].start,
+      end: _ms[i].end,
+      value: _ms[i].value
+    };
+
+    if (lastOne && lastOne.end === m.start) {
+      // merge to last one
+      lastOne.end = m.end;
+      lastOne.value += m.value;
+    } else {
+      compact.push(m);
+      lastOne = m;
+    }
+  }
+  return compact;
 }

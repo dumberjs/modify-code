@@ -510,7 +510,7 @@ test('modify-code can chain mutation calls', function(t) {
           [16, 0, 0, 16],
           [24, 0, 0, 19],
           [25, 0, 0, 20],
-          [26, 0, 1, 0],
+          [38, 0, 1, 0],
           [45, 0, 1, 7],
           [46, 0, 1, 8],
           [50, 0, 1, 12],
@@ -562,7 +562,7 @@ test('modify-code can chain mutation calls, in different order', function(t) {
           [16, 0, 0, 16],
           [24, 0, 0, 19],
           [25, 0, 0, 20],
-          [26, 0, 1, 0],
+          [38, 0, 1, 0],
           [45, 0, 1, 7],
           [46, 0, 1, 8],
           [50, 0, 1, 12],
@@ -574,5 +574,44 @@ test('modify-code can chain mutation calls, in different order', function(t) {
       sourcesContent: [ 'var a = require("a");\nexports.foo = a;\n' ]
     }
   });
+  t.end();
+});
+
+test('modify-code prepends, replaces and inserts at adjacent positions', function(t) {
+  var m = modify("import { a } from 'foo';@a() export class B {}", 'some.js');
+  // prepend import
+  m.prepend("import vf from './some.html';\n")
+  // rewrite import
+  m.replace(0, 24, "import { a, c } from 'foo';");
+  // insert new decorator
+  m.insert(24, '@c(vf) ');
+
+  t.deepEqual(m.transform(), {
+    code: "import vf from './some.html';\nimport { a, c } from 'foo';@c(vf) @a() export class B {}",
+    map: {
+      version: 3,
+      sources: ['some.js'],
+      sourcesContent: ["import { a } from 'foo';@a() export class B {}"],
+      file: 'some.js',
+      names: [],
+      mappings: encode([
+        [
+          [0, 0, 0, 0]
+        ],
+        [
+          [ 0, 0, 0, 0 ],
+          [ 34, 0, 0, 24 ],
+          [ 35, 0, 0, 25 ],
+          [ 36, 0, 0, 26 ],
+          [ 37, 0, 0, 27 ],
+          [ 39, 0, 0, 29 ],
+          [ 46, 0, 0, 36 ],
+          [ 52, 0, 0, 42 ],
+          [ 54, 0, 0, 44 ],
+          [ 55, 0, 0, 45 ]
+        ]
+      ])
+    }
+  })
   t.end();
 });
