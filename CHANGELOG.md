@@ -1,3 +1,12 @@
+## [0.5.1](https://github.com/dumberjs/modify-code/compare/v0.5.0...v0.5.1) (2019-07-14)
+
+
+### Bug Fixes
+
+* support modify adjacent positions ([4f8e21a](https://github.com/dumberjs/modify-code/commit/4f8e21a))
+
+
+
 # [0.5.0](https://github.com/dumberjs/modify-code/compare/v0.4.2...v0.5.0) (2019-07-13)
 
 
