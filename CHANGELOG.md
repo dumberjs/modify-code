@@ -1,3 +1,12 @@
+## [0.5.3](https://github.com/dumberjs/modify-code/compare/v0.5.2...v0.5.3) (2019-07-16)
+
+
+### Bug Fixes
+
+* fix a regression on tokenising empty source code ([e85263d](https://github.com/dumberjs/modify-code/commit/e85263d))
+
+
+
 ## [0.5.2](https://github.com/dumberjs/modify-code/compare/v0.5.1...v0.5.2) (2019-07-14)
 
 
