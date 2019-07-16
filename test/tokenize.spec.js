@@ -13,6 +13,16 @@ test('tokenize supports empty input', function(t) {
   t.end();
 });
 
+test('tokenize supports almost empty input', function(t) {
+  var code = '\n';
+  var tokens = tokenize(code);
+  t.deepEqual(tokens, [
+    { value: '\n', start: 0, end: 1, line: 1, column: 0 }
+  ]);
+  t.equal(tokensToCode(tokens), code);
+  t.end();
+});
+
 test('tokenize supports empty input, case2', function(t) {
   var code = '// empty code';
   var tokens = tokenize(code);

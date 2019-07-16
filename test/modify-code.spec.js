@@ -41,6 +41,30 @@ test('modify-code supports mutating empty code', function(t) {
   t.end();
 });
 
+test('modify-code supports mutating almost empty code', function(t) {
+  var m = modify('\n');
+  m.append('/* hello */');
+  t.deepEqual(m.transform(), {
+    code: '\n/* hello */',
+    map: {
+      version: 3,
+      sources: ['file.js'],
+      sourcesContent: ['\n'],
+      file: 'file.js',
+      names: [],
+      mappings: encode([
+        [
+          [0, 0, 0, 0]
+        ],
+        [
+          [0, 0, 0, 0]
+        ]
+      ])
+    }
+  })
+  t.end();
+});
+
 test('modify-code supports mutating empty code, case2', function(t) {
   var m = modify('/* empty */');
   m.prepend('define(function() {\n');
