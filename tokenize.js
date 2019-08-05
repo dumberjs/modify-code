@@ -1,7 +1,5 @@
 var parser = require('@babel/parser');
 
-// esprima tokens only contain essential tokens, we fill up gaps in between
-// so that we can reproduce the full code string.
 module.exports = function(code) {
   var tokens = parser.parse(code, {sourceType: 'module', plugins: [
     'jsx',
