@@ -1,3 +1,7 @@
+# [1.0.0](https://github.com/dumberjs/modify-code/compare/v0.5.3...v1.0.0) (2019-08-29)
+
+
+
 ## [0.5.3](https://github.com/dumberjs/modify-code/compare/v0.5.2...v0.5.3) (2019-07-16)
 
 
