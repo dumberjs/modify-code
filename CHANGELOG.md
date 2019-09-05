@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/dumberjs/modify-code/compare/v1.0.0...v1.0.1) (2019-09-05)
+
+
+### Bug Fixes
+
+* make spaces separated token to avoid mutation on same token ([63cc1da](https://github.com/dumberjs/modify-code/commit/63cc1da))
+
+
+
 # [1.0.0](https://github.com/dumberjs/modify-code/compare/v0.5.3...v1.0.0) (2019-08-29)
 
 
