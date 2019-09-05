@@ -103,15 +103,14 @@ test('modify-code outputs identity map', function(t) {
       sourcesContent: ['var a = 1;'],
       file: 'file.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [4, 0, 0, 4],
-          [6, 0, 0, 6],
-          [8, 0, 0, 8],
-          [9, 0, 0, 9]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 3, 0, 0, 3 ],
+                            [ 4, 0, 0, 4 ],
+                            [ 5, 0, 0, 5 ],
+                            [ 6, 0, 0, 6 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 9, 0, 0, 9 ] ] ])
     }
   })
   t.end();
@@ -128,15 +127,14 @@ test('modify-code replaces one token', function(t) {
       sourcesContent: ['var a = 1;'],
       file: 'file.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [4, 0, 0, 4],
-          [10, 0, 0, 6],
-          [12, 0, 0, 8],
-          [13, 0, 0, 9]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 3, 0, 0, 3 ],
+                            [ 4, 0, 0, 4 ],
+                            [ 9, 0, 0, 5 ],
+                            [ 10, 0, 0, 6 ],
+                            [ 11, 0, 0, 7 ],
+                            [ 12, 0, 0, 8 ],
+                            [ 13, 0, 0, 9 ] ] ])
     }
   })
   t.end();
@@ -153,14 +151,13 @@ test('modify-code deletes one token', function(t) {
       sourcesContent: ['var a = 1;'],
       file: 'file.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [4, 0, 0, 4],
-          [6, 0, 0, 6],
-          [8, 0, 0, 8]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 3, 0, 0, 3 ],
+                            [ 4, 0, 0, 4 ],
+                            [ 5, 0, 0, 5 ],
+                            [ 6, 0, 0, 6 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ] ] ])
     }
   })
   t.end();
@@ -199,15 +196,14 @@ test('modify-code prepends content', function(t) {
       sourcesContent: ['var a = 1;'],
       file: 'file.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [12, 0, 0, 4],
-          [14, 0, 0, 6],
-          [16, 0, 0, 8],
-          [17, 0, 0, 9]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 11, 0, 0, 3 ],
+                            [ 12, 0, 0, 4 ],
+                            [ 13, 0, 0, 5 ],
+                            [ 14, 0, 0, 6 ],
+                            [ 15, 0, 0, 7 ],
+                            [ 16, 0, 0, 8 ],
+                            [ 17, 0, 0, 9 ] ] ])
     }
   })
   t.end();
@@ -225,15 +221,14 @@ test('modify-code prepends multiple contents', function(t) {
       sourcesContent: ['var a = 1;'],
       file: 'file.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [20, 0, 0, 4],
-          [22, 0, 0, 6],
-          [24, 0, 0, 8],
-          [25, 0, 0, 9]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 19, 0, 0, 3 ],
+                            [ 20, 0, 0, 4 ],
+                            [ 21, 0, 0, 5 ],
+                            [ 22, 0, 0, 6 ],
+                            [ 23, 0, 0, 7 ],
+                            [ 24, 0, 0, 8 ],
+                            [ 25, 0, 0, 9 ] ] ])
     }
   })
   t.end();
@@ -250,15 +245,14 @@ test('modify-code appends content', function(t) {
       sourcesContent: ['var a = 1;'],
       file: 'file.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [4, 0, 0, 4],
-          [6, 0, 0, 6],
-          [8, 0, 0, 8],
-          [9, 0, 0, 9]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 3, 0, 0, 3 ],
+                            [ 4, 0, 0, 4 ],
+                            [ 5, 0, 0, 5 ],
+                            [ 6, 0, 0, 6 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 9, 0, 0, 9 ] ] ])
     }
   })
   t.end();
@@ -276,15 +270,14 @@ test('modify-code appends multiple contents', function(t) {
       sourcesContent: ['var a = 1;'],
       file: 'file.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [4, 0, 0, 4],
-          [6, 0, 0, 6],
-          [8, 0, 0, 8],
-          [9, 0, 0, 9]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 3, 0, 0, 3 ],
+                            [ 4, 0, 0, 4 ],
+                            [ 5, 0, 0, 5 ],
+                            [ 6, 0, 0, 6 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 9, 0, 0, 9 ] ] ])
     }
   })
   t.end();
@@ -305,22 +298,18 @@ test('modify-code does two replacement, each for one token', function(t) {
       sourcesContent: ['require("a");\nrequire("b");\n'],
       file: 'some.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [7, 0, 0, 7],
-          [8, 0, 0, 8],
-          [13, 0, 0, 11],
-          [14, 0, 0, 12]
-        ],
-        [
-          [0, 0, 1, 0],
-          [7, 0, 1, 7],
-          [8, 0, 1, 8],
-          [13, 0, 1, 11],
-          [14, 0, 1, 12]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 13, 0, 0, 11 ],
+                            [ 14, 0, 0, 12 ],
+                            [ 15, 0, 0, 13 ] ],
+                          [ [ 0, 0, 1, 0 ],
+                            [ 7, 0, 1, 7 ],
+                            [ 8, 0, 1, 8 ],
+                            [ 13, 0, 1, 11 ],
+                            [ 14, 0, 1, 12 ],
+                            [ 15, 0, 1, 13 ] ] ])
     }
   })
   t.end();
@@ -341,22 +330,18 @@ test('modify-code does two replacement, each for one token, in different order',
       sourcesContent: ['require("a");\nrequire("b");\n'],
       file: 'some.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [7, 0, 0, 7],
-          [8, 0, 0, 8],
-          [13, 0, 0, 11],
-          [14, 0, 0, 12]
-        ],
-        [
-          [0, 0, 1, 0],
-          [7, 0, 1, 7],
-          [8, 0, 1, 8],
-          [13, 0, 1, 11],
-          [14, 0, 1, 12]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 13, 0, 0, 11 ],
+                            [ 14, 0, 0, 12 ],
+                            [ 15, 0, 0, 13 ] ],
+                          [ [ 0, 0, 1, 0 ],
+                            [ 7, 0, 1, 7 ],
+                            [ 8, 0, 1, 8 ],
+                            [ 13, 0, 1, 11 ],
+                            [ 14, 0, 1, 12 ],
+                            [ 15, 0, 1, 13 ] ] ])
     }
   })
   t.end();
@@ -377,19 +362,15 @@ test('modify-code replaces across multiple tokens', function(t) {
       sourcesContent: ['require("a");\nrequire("b");\n'],
       file: 'some.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [7, 0, 0, 7],
-          [8, 0, 0, 8],
-          [13, 0, 0, 11],
-          [14, 0, 0, 12]
-        ],
-        [
-          [0, 0, 1, 0],
-          [9, 0, 1, 12]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 13, 0, 0, 11 ],
+                            [ 14, 0, 0, 12 ],
+                            [ 15, 0, 0, 13 ] ],
+                          [ [ 0, 0, 1, 0 ],
+                            [ 9, 0, 1, 12 ],
+                            [ 10, 0, 1, 13 ] ] ])
     }
   })
   t.end();
@@ -408,23 +389,19 @@ test('modify-code inserts content', function(t) {
       sourcesContent: ['require("a");\nrequire("b");\n'],
       file: 'some.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [7, 0, 0, 7],
-          [8, 0, 0, 8],
-          [11, 0, 0, 11],
-          [12, 0, 0, 12]
-        ],
-        [
-          [0, 0, 0, 12],
-          [8, 0, 1, 0],
-          [15, 0, 1, 7],
-          [16, 0, 1, 8],
-          [19, 0, 1, 11],
-          [20, 0, 1, 12]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 11, 0, 0, 11 ],
+                            [ 12, 0, 0, 12 ],
+                            [ 13, 0, 0, 13 ] ],
+                          [ [ 0, 0, 0, 13 ],
+                            [ 8, 0, 1, 0 ],
+                            [ 15, 0, 1, 7 ],
+                            [ 16, 0, 1, 8 ],
+                            [ 19, 0, 1, 11 ],
+                            [ 20, 0, 1, 12 ],
+                            [ 21, 0, 1, 13 ] ] ])
     }
   })
   t.end();
@@ -443,22 +420,18 @@ test('modify-code inserts content inside a token', function(t) {
       sourcesContent: ['require("a");\nrequire("b");\n'],
       file: 'some.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0],
-          [7, 0, 0, 7],
-          [8, 0, 0, 8],
-          [11, 0, 0, 11],
-          [12, 0, 0, 12]
-        ],
-        [
-          [0, 0, 1, 0],
-          [7, 0, 1, 7],
-          [8, 0, 1, 8],
-          [15, 0, 1, 11],
-          [16, 0, 1, 12]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 11, 0, 0, 11 ],
+                            [ 12, 0, 0, 12 ],
+                            [ 13, 0, 0, 13 ] ],
+                          [ [ 0, 0, 1, 0 ],
+                            [ 7, 0, 1, 7 ],
+                            [ 8, 0, 1, 8 ],
+                            [ 15, 0, 1, 11 ],
+                            [ 16, 0, 1, 12 ],
+                            [ 17, 0, 1, 13 ] ] ])
     }
   })
   t.end();
@@ -521,27 +494,28 @@ test('modify-code can chain mutation calls', function(t) {
       version: 3,
       sources: [ 'optional-file-name.js' ],
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0],
-          [4, 0, 0, 4],
-          [6, 0, 0, 6],
-          [8, 0, 0, 8],
-          [15, 0, 0, 15],
-          [16, 0, 0, 16],
-          [24, 0, 0, 19],
-          [25, 0, 0, 20],
-          [38, 0, 1, 0],
-          [45, 0, 1, 7],
-          [46, 0, 1, 8],
-          [50, 0, 1, 12],
-          [52, 0, 1, 14],
-          [53, 0, 1, 15],
-        ]
-      ]),
+      mappings: encode([ [ [ 0, 0, 0, 0 ] ],
+                          [ [ 0, 0, 0, 0 ],
+                            [ 3, 0, 0, 3 ],
+                            [ 4, 0, 0, 4 ],
+                            [ 5, 0, 0, 5 ],
+                            [ 6, 0, 0, 6 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 15, 0, 0, 15 ],
+                            [ 16, 0, 0, 16 ],
+                            [ 24, 0, 0, 19 ],
+                            [ 25, 0, 0, 20 ],
+                            [ 26, 0, 0, 21 ],
+                            [ 38, 0, 1, 0 ],
+                            [ 45, 0, 1, 7 ],
+                            [ 46, 0, 1, 8 ],
+                            [ 49, 0, 1, 11 ],
+                            [ 50, 0, 1, 12 ],
+                            [ 51, 0, 1, 13 ],
+                            [ 52, 0, 1, 14 ],
+                            [ 53, 0, 1, 15 ],
+                            [ 54, 0, 1, 16 ] ] ]),
       file: 'optional-file-name.js',
       sourcesContent: [ 'var a = require("a");\nexports.foo = a;\n' ]
     }
@@ -573,27 +547,28 @@ test('modify-code can chain mutation calls, in different order', function(t) {
       version: 3,
       sources: [ 'optional-file-name.js' ],
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0],
-          [4, 0, 0, 4],
-          [6, 0, 0, 6],
-          [8, 0, 0, 8],
-          [15, 0, 0, 15],
-          [16, 0, 0, 16],
-          [24, 0, 0, 19],
-          [25, 0, 0, 20],
-          [38, 0, 1, 0],
-          [45, 0, 1, 7],
-          [46, 0, 1, 8],
-          [50, 0, 1, 12],
-          [52, 0, 1, 14],
-          [53, 0, 1, 15],
-        ]
-      ]),
+      mappings: encode([ [ [ 0, 0, 0, 0 ] ],
+                          [ [ 0, 0, 0, 0 ],
+                            [ 3, 0, 0, 3 ],
+                            [ 4, 0, 0, 4 ],
+                            [ 5, 0, 0, 5 ],
+                            [ 6, 0, 0, 6 ],
+                            [ 7, 0, 0, 7 ],
+                            [ 8, 0, 0, 8 ],
+                            [ 15, 0, 0, 15 ],
+                            [ 16, 0, 0, 16 ],
+                            [ 24, 0, 0, 19 ],
+                            [ 25, 0, 0, 20 ],
+                            [ 26, 0, 0, 21 ],
+                            [ 38, 0, 1, 0 ],
+                            [ 45, 0, 1, 7 ],
+                            [ 46, 0, 1, 8 ],
+                            [ 49, 0, 1, 11 ],
+                            [ 50, 0, 1, 12 ],
+                            [ 51, 0, 1, 13 ],
+                            [ 52, 0, 1, 14 ],
+                            [ 53, 0, 1, 15 ],
+                            [ 54, 0, 1, 16 ] ] ]),
       file: 'optional-file-name.js',
       sourcesContent: [ 'var a = require("a");\nexports.foo = a;\n' ]
     }
@@ -618,24 +593,51 @@ test('modify-code prepends, replaces and inserts at adjacent positions', functio
       sourcesContent: ["import { a } from 'foo';@a() export class B {}"],
       file: 'some.js',
       names: [],
-      mappings: encode([
-        [
-          [0, 0, 0, 0]
-        ],
-        [
-          [ 0, 0, 0, 0 ],
-          [ 34, 0, 0, 24 ],
-          [ 35, 0, 0, 25 ],
-          [ 36, 0, 0, 26 ],
-          [ 37, 0, 0, 27 ],
-          [ 39, 0, 0, 29 ],
-          [ 46, 0, 0, 36 ],
-          [ 52, 0, 0, 42 ],
-          [ 54, 0, 0, 44 ],
-          [ 55, 0, 0, 45 ]
-        ]
-      ])
+      mappings: encode([ [ [ 0, 0, 0, 0 ] ],
+                          [ [ 0, 0, 0, 0 ],
+                            [ 34, 0, 0, 24 ],
+                            [ 35, 0, 0, 25 ],
+                            [ 36, 0, 0, 26 ],
+                            [ 37, 0, 0, 27 ],
+                            [ 38, 0, 0, 28 ],
+                            [ 39, 0, 0, 29 ],
+                            [ 45, 0, 0, 35 ],
+                            [ 46, 0, 0, 36 ],
+                            [ 51, 0, 0, 41 ],
+                            [ 52, 0, 0, 42 ],
+                            [ 53, 0, 0, 43 ],
+                            [ 54, 0, 0, 44 ],
+                            [ 55, 0, 0, 45 ] ] ])
     }
   })
+  t.end();
+});
+
+test('modify-code prepends and inserts around spaces', function(t) {
+  var m = modify('\nexport class Foo {}', 'some.js');
+  m.prepend("import { view } from 'view';\n");
+  m.insert(1, '@view()\n');
+
+  t.deepEqual(m.transform(), {
+    code: "import { view } from 'view';\n\n@view()\nexport class Foo {}",
+    map: {
+      version: 3,
+      sources: ['some.js'],
+      sourcesContent: ['\nexport class Foo {}'],
+      file: 'some.js',
+      names: [],
+      mappings: encode([ [ [ 0, 0, 0, 0 ] ],
+                          [ [ 0, 0, 0, 0 ] ],
+                          [ [ 0, 0, 1, 0 ] ],
+                          [ [ 0, 0, 1, 0 ],
+                            [ 6, 0, 1, 6 ],
+                            [ 7, 0, 1, 7 ],
+                            [ 12, 0, 1, 12 ],
+                            [ 13, 0, 1, 13 ],
+                            [ 16, 0, 1, 16 ],
+                            [ 17, 0, 1, 17 ],
+                            [ 18, 0, 1, 18 ] ] ])
+    }
+  });
   t.end();
 });

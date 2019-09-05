@@ -33,35 +33,58 @@ module.exports = function(code) {
 
   for (; i < ii; i++) {
     token = {
+      value: code.slice(tokens[i].start, tokens[i].end),
       start: tokens[i].start,
       end: tokens[i].end,
       line: tokens[i].loc.start.line,
-      column: tokens[i].loc.start.column
+      column: tokens[i].loc.start.column,
+      endLine: tokens[i].loc.end.line,
+      endColumn: tokens[i].loc.end.column
     };
 
     if (token.start === token.end) continue;
-    token.value = code.slice(token.start, token.end);
 
     if (i === 0) {
       if (token.start !== 0) {
-        // merge leading gap (e.g. white spaces, comments)
-        token.value = code.slice(0, token.start) + token.value;
-        token.start = 0;
+        // leading gap (e.g. white spaces, comments)
+        fullTokens.push({
+          value: code.slice(0, token.start),
+          start: 0,
+          end: token.start,
+          line: 1,
+          column: 0
+        });
       }
     } else if (token.start !== lastToken.end) {
-      // merge gap (e.g. white spaces, comments) into pervious token
-      lastToken.value += code.slice(lastToken.end, token.start);
-      lastToken.end = token.start;
+      // gap (e.g. white spaces, comments)
+      fullTokens.push({
+        value: code.slice(lastToken.end, token.start),
+        start: lastToken.end,
+        end: token.start,
+        line: lastToken.endLine,
+        column: lastToken.endColumn
+      });
     }
 
     lastToken = token;
-    fullTokens.push(token);
+    fullTokens.push({
+      value: token.value,
+      start: token.start,
+      end: token.end,
+      line: token.line,
+      column: token.column
+    });
   }
 
   if (lastToken && code.length > lastToken.end) {
-    // merge tailing gap (e.g. white spaces, comments) into pervious token
-    lastToken.value += code.slice(lastToken.end, code.length);
-    lastToken.end = code.length;
+    // tailing gap (e.g. white spaces, comments) into previous token
+    fullTokens.push({
+      value: code.slice(lastToken.end),
+      start: lastToken.end,
+      end: code.length,
+      line: lastToken.endLine,
+      column: lastToken.endColumn
+    });
   }
 
   if (fullTokens.length === 0 && code.length) {

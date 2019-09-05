@@ -79,7 +79,7 @@ exports['default'] = function(code, filePath) {
   };
 
   modifyCode.transform = function() {
-    var ms = compactMutations(mutations)
+    var ms = compactMutations(mutations);
     var i = 0, ti = 0, ii = ms.length, newTokens = [];
     var m, offset, offset2, merged, isInsertion;
     var tokens = tokenize(code);
