@@ -2,11 +2,9 @@
 
 Modify JavaScript code, generate source map for the modification. Inspired by [magic-string](https://github.com/Rich-Harris/magic-string).
 
-Different from magic-string which either generates source map in resolution of line or char, modify-code generates source map in resolution of token (tokenized by [esprima](https://github.com/jquery/esprima)). The other difference is that modify-code has less features, for simplicity, it doesn't allow multiple mutations to touch same token.
+Different from magic-string which either generates source map in resolution of line or char, modify-code generates source map in resolution of token (tokenized by [`@babel/parser`](https://github.com/babel/babel/tree/master/packages/babel-parser)). The other difference is that modify-code has less features, for simplicity, it doesn't allow multiple mutations to touch same token.
 
-> Note, although esprima can not parse TypeScript source code, it can tokenize TypeScript source code without any issue. modify-code works for plain CommonJS code, or ESNext code, or TypeScript code.
-
-modify-code got two npm dependencies: `esprima` and `source-map@^0.6.1` (easier to run in browser), so the footprint is bigger than magic-string.
+modify-code got two npm dependencies: `@babel/parser` and `source-map`, so the footprint is bigger than magic-string.
 
 ## Usage
 
@@ -15,7 +13,7 @@ Following code example showed all methods.
 1. The mutation APIs always use index numbers on original code string.
 2. You don't need to apply updated index number in second mutation due to the code change done by first mutation.
 3. All mutation calls are kind of independent, you can reorder the mutations, the final result would not change. Except multiple `prepend()` (or `append()`, or `insert()` on same location), the order matters for the insertions to same index.
-4. Simpler than magic-string, modify-code doesn't allow multiple mutations to touch same token (code was tokenized by esprima) twice.
+4. Simpler than magic-string, modify-code doesn't allow multiple mutations to touch same token (code was tokenized by `@babel/parser`) twice.
 5. calls can be chained together. `const result = modifyCode(...).replace(...).prepend(...).transform()`.
 
 ```js
