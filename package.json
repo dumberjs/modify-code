@@ -34,16 +34,16 @@
   },
   "homepage": "https://github.com/dumberjs/modify-code#readme",
   "dependencies": {
-    "@babel/parser": "^7.5.5",
+    "@babel/parser": "^7.7.4",
     "source-map": "^0.7.3"
   },
   "devDependencies": {
     "browserify": "^16.5.0",
-    "eslint": "^6.3.0",
+    "eslint": "^6.7.2",
     "nyc": "^14.1.1",
     "sourcemap-codec": "^1.4.6",
-    "standard-changelog": "^2.0.13",
+    "standard-changelog": "^2.0.18",
     "tape": "^4.11.0",
-    "browser-do": "^0.3.2"
+    "browser-do": "^0.3.3"
   }
 }
