@@ -54,6 +54,15 @@ const result = m.transform();
 }
 ```
 
+## JSX and TypeScript
+
+By default, modify-code tries to parse the source with a large set of possible syntax which includes JSX and TypeScript.
+
+User can optionally skip one or both for performance gain.
+```js
+const m = modifyCode(code, filename, {noJsx: true, noTypeScript: true});
+```
+
 ## Join existing source map
 
 If the code modification is one of the stages of code transpiling, you might want to apply this source map on top of an existing source map.
