@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/dumberjs/modify-code/compare/v1.0.2...v1.1.0) (2020-01-18)
+
+
+### Features
+
+* support option noJsx and noTypeScript to skip those parsers ([52018aa](https://github.com/dumberjs/modify-code/commit/52018aa253817a7c473ca35f24f9707f295d1182)), closes [babel/babel#11029](https://github.com/babel/babel/issues/11029)
+
+
+
 ## [1.0.2](https://github.com/dumberjs/modify-code/compare/v1.0.1...v1.0.2) (2019-12-05)
 
 
