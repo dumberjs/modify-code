@@ -77,7 +77,7 @@ test('tokenize outputs tokens with leading and tailing white spaces', function(t
   t.end();
 });
 
-test('tokenize understand latest syntax', function(t) {
+test('tokenize understands latest syntax', function(t) {
   var code = '@a()\nexport class B {\n  c = 1;\n}\n';
   var tokens = tokenize(code);
   t.deepEqual(tokens, [
@@ -108,7 +108,7 @@ test('tokenize understand latest syntax', function(t) {
   t.end();
 });
 
-test('tokenize understand jsx and typescript syntax', function(t) {
+test('tokenize understands jsx syntax', function(t) {
   var code = 'export default () => <button onClick={props.onClick}>OK</button>;';
   var tokens = tokenize(code);
   t.deepEqual(tokens, [
@@ -143,3 +143,87 @@ test('tokenize understand jsx and typescript syntax', function(t) {
   t.equal(tokensToCode(tokens), code);
   t.end();
 });
+
+test('tokenize can turn off jsx syntax', function(t) {
+  var code = 'export default () => <button onClick={props.onClick}>OK</button>;';
+  t.throws(function() { tokenize(code, {noJsx: true}); });
+  t.end();
+});
+
+test('tokenize still understands jsx syntax when typescript is turned off', function(t) {
+  var code = 'export default () => <button onClick={props.onClick}>OK</button>;';
+  var tokens = tokenize(code, {noTypeScript: true});
+  t.deepEqual(tokens, [
+    { value: 'export', start: 0, end: 6, line: 1, column: 0 },
+    { value: ' ', start: 6, end: 7, line: 1, column: 6 },
+    { value: 'default', start: 7, end: 14, line: 1, column: 7 },
+    { value: ' ', start: 14, end: 15, line: 1, column: 14 },
+    { value: '(', start: 15, end: 16, line: 1, column: 15 },
+    { value: ')', start: 16, end: 17, line: 1, column: 16 },
+    { value: ' ', start: 17, end: 18, line: 1, column: 17 },
+    { value: '=>', start: 18, end: 20, line: 1, column: 18 },
+    { value: ' ', start: 20, end: 21, line: 1, column: 20 },
+    { value: '<', start: 21, end: 22, line: 1, column: 21 },
+    { value: 'button', start: 22, end: 28, line: 1, column: 22 },
+    { value: ' ', start: 28, end: 29, line: 1, column: 28 },
+    { value: 'onClick', start: 29, end: 36, line: 1, column: 29 },
+    { value: '=', start: 36, end: 37, line: 1, column: 36 },
+    { value: '{', start: 37, end: 38, line: 1, column: 37 },
+    { value: 'props', start: 38, end: 43, line: 1, column: 38 },
+    { value: '.', start: 43, end: 44, line: 1, column: 43 },
+    { value: 'onClick', start: 44, end: 51, line: 1, column: 44 },
+    { value: '}', start: 51, end: 52, line: 1, column: 51 },
+    { value: '>', start: 52, end: 53, line: 1, column: 52 },
+    { value: 'OK', start: 53, end: 55, line: 1, column: 53 },
+    { value: '<', start: 55, end: 56, line: 1, column: 55 },
+    { value: '/', start: 56, end: 57, line: 1, column: 56 },
+    { value: 'button', start: 57, end: 63, line: 1, column: 57 },
+    { value: '>', start: 63, end: 64, line: 1, column: 63 },
+    { value: ';', start: 64, end: 65, line: 1, column: 64 }
+  ]
+);
+  t.equal(tokensToCode(tokens), code);
+  t.end();
+});
+
+
+test('tokenize understand jsx and typescript syntax', function(t) {
+  var code = 'export default (name: string) => <p>{name}</p>;';
+  var tokens = tokenize(code);
+  t.deepEqual(tokens, [
+    { value: 'export', start: 0, end: 6, line: 1, column: 0 },
+    { value: ' ', start: 6, end: 7, line: 1, column: 6 },
+    { value: 'default', start: 7, end: 14, line: 1, column: 7 },
+    { value: ' ', start: 14, end: 15, line: 1, column: 14 },
+    { value: '(', start: 15, end: 16, line: 1, column: 15 },
+    { value: 'name', start: 16, end: 20, line: 1, column: 16 },
+    { value: ':', start: 20, end: 21, line: 1, column: 20 },
+    { value: ' ', start: 21, end: 22, line: 1, column: 21 },
+    { value: 'string', start: 22, end: 28, line: 1, column: 22 },
+    { value: ')', start: 28, end: 29, line: 1, column: 28 },
+    { value: ' ', start: 29, end: 30, line: 1, column: 29 },
+    { value: '=>', start: 30, end: 32, line: 1, column: 30 },
+    { value: ' ', start: 32, end: 33, line: 1, column: 32 },
+    { value: '<', start: 33, end: 34, line: 1, column: 33 },
+    { value: 'p', start: 34, end: 35, line: 1, column: 34 },
+    { value: '>', start: 35, end: 36, line: 1, column: 35 },
+    { value: '{', start: 36, end: 37, line: 1, column: 36 },
+    { value: 'name', start: 37, end: 41, line: 1, column: 37 },
+    { value: '}', start: 41, end: 42, line: 1, column: 41 },
+    { value: '<', start: 42, end: 43, line: 1, column: 42 },
+    { value: '/', start: 43, end: 44, line: 1, column: 43 },
+    { value: 'p', start: 44, end: 45, line: 1, column: 44 },
+    { value: '>', start: 45, end: 46, line: 1, column: 45 },
+    { value: ';', start: 46, end: 47, line: 1, column: 46 }
+  ]
+);
+  t.equal(tokensToCode(tokens), code);
+  t.end();
+});
+
+test('tokenize can turn off typescript syntax', function(t) {
+  var code = 'export default (name: string) => <p>{name}</p>;';
+  t.throws(function() { tokenize(code, {noTypeScript: true}); });
+  t.end();
+});
+

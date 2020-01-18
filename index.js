@@ -2,7 +2,7 @@ var tokenize = require('./tokenize');
 var SourceNode = require('source-map').SourceNode;
 
 exports.__esModule = true;
-exports['default'] = function(code, filePath) {
+exports['default'] = function(code, filePath, options) {
   // the file name to be used in sourcemap sources and file fields
   filePath = (filePath || 'file.js').replace(/\\/g, '/');
   var mutations = [];
@@ -82,7 +82,7 @@ exports['default'] = function(code, filePath) {
     var ms = compactMutations(mutations);
     var i = 0, ti = 0, ii = ms.length, newTokens = [];
     var m, offset, offset2, merged, isInsertion;
-    var tokens = tokenize(code);
+    var tokens = tokenize(code, options);
 
     for (; i < ii; i++) {
       m = ms[i];

@@ -1,33 +1,41 @@
 var parser = require('@babel/parser');
 
-module.exports = function(code) {
-  var tokens = parser.parse(code, {sourceType: 'module', plugins: [
-    'jsx',
-    'typescript',
-    'asyncGenerators',
-    'bigInt',
-    'classProperties',
-    'classPrivateProperties',
-    'classPrivateMethods',
-    'decorators-legacy',
-    // ['decorators', {'decoratorsBeforeExport': true}],
-    'doExpressions',
-    'dynamicImport',
-    'exportDefaultFrom',
-    'exportNamespaceFrom',
-    'functionBind',
-    'functionSent',
-    'importMeta',
-    'logicalAssignment',
-    'nullishCoalescingOperator',
-    'numericSeparator',
-    'objectRestSpread',
-    'optionalCatchBinding',
-    'optionalChaining',
-    'partialApplication',
-    // ['pipelineOperator', {proposal: 'minimal'}],
-    'throwExpressions',
-  ], tokens: true}).tokens;
+var commonPlugins = [
+  'asyncGenerators',
+  'bigInt',
+  'classProperties',
+  'classPrivateProperties',
+  'classPrivateMethods',
+  'decorators-legacy',
+  // ['decorators', {'decoratorsBeforeExport': true}],
+  'doExpressions',
+  'dynamicImport',
+  'exportDefaultFrom',
+  'exportNamespaceFrom',
+  'functionBind',
+  'functionSent',
+  'importMeta',
+  'logicalAssignment',
+  'nullishCoalescingOperator',
+  'numericSeparator',
+  'objectRestSpread',
+  'optionalCatchBinding',
+  'optionalChaining',
+  'partialApplication',
+  // ['pipelineOperator', {proposal: 'minimal'}],
+  'throwExpressions',
+];
+
+module.exports = function(code, options) {
+  var plugins = commonPlugins.slice(0);
+  if (!(options && options.noJsx)) plugins.push('jsx');
+  if (!(options && options.noTypeScript)) plugins.push('typescript');
+
+  var tokens = parser.parse(code, {
+    sourceType: 'module',
+    plugins: plugins,
+    tokens: true
+  }).tokens;
 
   var i = 0, ii = tokens.length, fullTokens = [], token, lastToken;
 

@@ -577,7 +577,7 @@ test('modify-code can chain mutation calls, in different order', function(t) {
 });
 
 test('modify-code prepends, replaces and inserts at adjacent positions', function(t) {
-  var m = modify("import { a } from 'foo';@a() export class B {}", 'some.js');
+  var m = modify("import { a } from 'foo';@a() export class B {}", 'some.js', {noJsx: true, noTypeScript: true});
   // prepend import
   m.prepend("import vf from './some.html';\n")
   // rewrite import
@@ -641,3 +641,53 @@ test('modify-code prepends and inserts around spaces', function(t) {
   });
   t.end();
 });
+
+test('modify-code mutates jsx and typescript code', function(t) {
+  var m = modify('export default (name: string) => <p>{name}</p>;', 'some.js');
+  m.prepend("import React from 'react';\n");
+
+  t.deepEqual(m.transform(), {
+    code: "import React from 'react';\nexport default (name: string) => <p>{name}</p>;",
+    map: {
+      version: 3,
+      sources: ['some.js'],
+      sourcesContent: ['export default (name: string) => <p>{name}</p>;'],
+      file: 'some.js',
+      names: [],
+      mappings: encode([ [ [ 0, 0, 0, 0 ] ],
+                          [
+                            [ 0, 0, 0, 0 ],   [ 6, 0, 0, 6 ],
+                            [ 7, 0, 0, 7 ],   [ 14, 0, 0, 14 ],
+                            [ 15, 0, 0, 15 ], [ 16, 0, 0, 16 ],
+                            [ 20, 0, 0, 20 ], [ 21, 0, 0, 21 ],
+                            [ 22, 0, 0, 22 ], [ 28, 0, 0, 28 ],
+                            [ 29, 0, 0, 29 ], [ 30, 0, 0, 30 ],
+                            [ 32, 0, 0, 32 ], [ 33, 0, 0, 33 ],
+                            [ 34, 0, 0, 34 ], [ 35, 0, 0, 35 ],
+                            [ 36, 0, 0, 36 ], [ 37, 0, 0, 37 ],
+                            [ 41, 0, 0, 41 ], [ 42, 0, 0, 42 ],
+                            [ 43, 0, 0, 43 ], [ 44, 0, 0, 44 ],
+                            [ 45, 0, 0, 45 ], [ 46, 0, 0, 46 ]
+                          ]
+                        ])
+    }
+  });
+  t.end();
+});
+
+test('modify-code can turn off jsx', function(t) {
+  var m = modify('export default (name: string) => <p>{name}</p>;', 'some.js', {noJsx: true});
+  m.prepend("import React from 'react';\n");
+
+  t.throws(function() {m.transform();});
+  t.end();
+});
+
+test('modify-code can turn off typescript', function(t) {
+  var m = modify('export default (name: string) => <p>{name}</p>;', 'some.js', {noTypeScript: true});
+  m.prepend("import React from 'react';\n");
+
+  t.throws(function() {m.transform();});
+  t.end();
+});
+
