@@ -24,6 +24,7 @@ var commonPlugins = [
   'partialApplication',
   // ['pipelineOperator', {proposal: 'minimal'}],
   'throwExpressions',
+  'topLevelAwait'
 ];
 
 module.exports = function(code, options) {
