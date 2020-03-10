@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/dumberjs/modify-code#readme",
   "dependencies": {
-    "@babel/parser": "^7.8.3",
+    "@babel/parser": "^7.8.7",
     "source-map": "^0.7.3"
   },
   "devDependencies": {
@@ -43,7 +43,7 @@
     "nyc": "^15.0.0",
     "sourcemap-codec": "^1.4.8",
     "standard-changelog": "^2.0.21",
-    "tape": "^4.13.0",
-    "browser-do": "^0.4.0"
+    "tape": "^4.13.2",
+    "browser-do": "^2.0.1"
   }
 }
