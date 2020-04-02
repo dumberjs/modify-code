@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/dumberjs/modify-code/compare/v1.1.0...v1.2.0) (2020-04-02)
+
+
+### Features
+
+* remove babel parser, replaced with a patched js-tokens ([bc468b0](https://github.com/dumberjs/modify-code/commit/bc468b09bb006d3284a477aed19473b472370480))
+
+
+
 # [1.1.0](https://github.com/dumberjs/modify-code/compare/v1.0.2...v1.1.0) (2020-01-18)
 
 
