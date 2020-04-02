@@ -2,9 +2,7 @@
 
 Modify JavaScript code, generate source map for the modification. Inspired by [magic-string](https://github.com/Rich-Harris/magic-string).
 
-Different from magic-string which either generates source map in resolution of line or char, modify-code generates source map in resolution of token (tokenized by [`@babel/parser`](https://github.com/babel/babel/tree/master/packages/babel-parser)). The other difference is that modify-code has less features, for simplicity, it doesn't allow multiple mutations to touch same token.
-
-modify-code got two npm dependencies: `@babel/parser` and `source-map`, so the footprint is bigger than magic-string.
+Different from magic-string which either generates source map in resolution of line or char, modify-code generates source map in resolution of token (tokenized by [js-tokens](https://github.com/lydell/js-tokens)). The other difference is that modify-code has less features, for simplicity, it doesn't allow multiple mutations to touch same token.
 
 ## Usage
 
@@ -13,8 +11,8 @@ Following code example showed all methods.
 1. The mutation APIs always use index numbers on original code string.
 2. You don't need to apply updated index number in second mutation due to the code change done by first mutation.
 3. All mutation calls are kind of independent, you can reorder the mutations, the final result would not change. Except multiple `prepend()` (or `append()`, or `insert()` on same location), the order matters for the insertions to same index.
-4. Simpler than magic-string, modify-code doesn't allow multiple mutations to touch same token (code was tokenized by `@babel/parser`) twice.
-5. calls can be chained together. `const result = modifyCode(...).replace(...).prepend(...).transform()`.
+4. Simpler than magic-string, modify-code doesn't allow multiple mutations to touch same token.
+5. Calls can be chained together. `const result = modifyCode(...).replace(...).prepend(...).transform()`.
 
 ```js
 // ESNext / TypeScript
@@ -56,12 +54,7 @@ const result = m.transform();
 
 ## JSX and TypeScript
 
-By default, modify-code tries to parse the source with a large set of possible syntax which includes JSX and TypeScript.
-
-User can optionally skip one or both for performance gain.
-```js
-const m = modifyCode(code, filename, {noJsx: true, noTypeScript: true});
-```
+modify-code can tokenize both JSX and TypeScript, actually can even tokenize invalid code or unknown syntax. This is a gift from js-tokens.
 
 ## Join existing source map
 
