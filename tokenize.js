@@ -1,7 +1,7 @@
 // Copied from js-tokens v5 https://github.com/lydell/js-tokens
 // But removed the part to match "regex" token in order to avoid divider/regex bug.
-// As a result, a real regex will become multiple tokens, which does not matter
-// in generating source map.
+// As a result, a real regex will be parsed as multiple tokens, but that does not
+// matter in generating source map.
 const regex = /((['"])(?:(?!\2)[^\\\n\r]|\\(?:\r\n|[\s\S]))*(\2)?|`(?:[^`\\$]|\\[\s\S]|\$(?!\{)|\$\{(?:[^{}]|\{[^}]*\}?)*\}?)*(`)?)|(\/\/.*)|(\/\*(?:[^*]|\*(?!\/))*(\*\/)?)|(0[xX][\da-fA-F]+|0[oO][0-7]+|0[bB][01]+|(?:\d*\.\d+|\d+\.?)(?:[eE][+-]?\d+)?)|((?!\d)(?:(?!\s)[$\w\u0080-\uFFFF]|\\u[\da-fA-F]{4}|\\u\{[\da-fA-F]+\})+)|(--|\+\+|&&|\|\||=>|\.{3}|(?:[+\-/%&|^]|\*{1,2}|<{1,2}|>{1,3}|!=?|={1,2})=?|[?~.,:;[\](){}])|(\s+)|(^$|[\s\S])/g;
 
 module.exports = function(code) {

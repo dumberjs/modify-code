@@ -2,7 +2,7 @@
 
 Modify JavaScript code, generate source map for the modification. Inspired by [magic-string](https://github.com/Rich-Harris/magic-string).
 
-Different from magic-string which either generates source map in resolution of line or char, modify-code generates source map in resolution of token (tokenized by [js-tokens](https://github.com/lydell/js-tokens)). The other difference is that modify-code has less features, for simplicity, it doesn't allow multiple mutations to touch same token.
+Different from magic-string which either generates source map in resolution of line or char, modify-code generates source map in resolution of token (tokenized by a patched [js-tokens](https://github.com/lydell/js-tokens)). The other difference is that modify-code has less features, for simplicity, it doesn't allow multiple mutations to touch same token.
 
 ## Usage
 
