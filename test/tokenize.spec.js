@@ -78,7 +78,7 @@ test('tokenize outputs tokens with leading and tailing white spaces', function(t
 });
 
 test('tokenize understands latest syntax', function(t) {
-  var code = '@a()\nexport class B {\n  c = 1;\n}\n';
+  var code = '@a()\nexport class B {\n  c = 1;\r\n}\n';
   var tokens = tokenize(code);
   t.deepEqual(tokens, [
     { value: '@', start: 0, end: 1, line: 1, column: 0 },
@@ -100,9 +100,9 @@ test('tokenize understands latest syntax', function(t) {
     { value: ' ', start: 27, end: 28, line: 3, column: 5 },
     { value: '1', start: 28, end: 29, line: 3, column: 6 },
     { value: ';', start: 29, end: 30, line: 3, column: 7 },
-    { value: '\n', start: 30, end: 31, line: 3, column: 8 },
-    { value: '}', start: 31, end: 32, line: 4, column: 0 },
-    { value: '\n', start: 32, end: 33, line: 4, column: 1 }
+    { value: '\r\n', start: 30, end: 32, line: 3, column: 8 },
+    { value: '}', start: 32, end: 33, line: 4, column: 0 },
+    { value: '\n', start: 33, end: 34, line: 4, column: 1 }
   ]);
   t.equal(tokensToCode(tokens), code);
   t.end();
@@ -141,12 +141,6 @@ test('tokenize understands jsx syntax', function(t) {
   ]
 );
   t.equal(tokensToCode(tokens), code);
-  t.end();
-});
-
-test('tokenize can turn off jsx syntax', function(t) {
-  var code = 'export default () => <button onClick={props.onClick}>OK</button>;';
-  t.throws(function() { tokenize(code, {noJsx: true}); });
   t.end();
 });
 
@@ -220,10 +214,3 @@ test('tokenize understand jsx and typescript syntax', function(t) {
   t.equal(tokensToCode(tokens), code);
   t.end();
 });
-
-test('tokenize can turn off typescript syntax', function(t) {
-  var code = 'export default (name: string) => <p>{name}</p>;';
-  t.throws(function() { tokenize(code, {noTypeScript: true}); });
-  t.end();
-});
-

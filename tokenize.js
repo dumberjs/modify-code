@@ -1,110 +1,36 @@
-var parser = require('@babel/parser');
+// Copied from js-tokens v5 https://github.com/lydell/js-tokens
+// But removed the part to match "regex" token in order to avoid divider/regex bug.
+// As a result, a real regex will become multiple tokens, which does not matter
+// in generating source map.
+const regex = /((['"])(?:(?!\2)[^\\\n\r]|\\(?:\r\n|[\s\S]))*(\2)?|`(?:[^`\\$]|\\[\s\S]|\$(?!\{)|\$\{(?:[^{}]|\{[^}]*\}?)*\}?)*(`)?)|(\/\/.*)|(\/\*(?:[^*]|\*(?!\/))*(\*\/)?)|(0[xX][\da-fA-F]+|0[oO][0-7]+|0[bB][01]+|(?:\d*\.\d+|\d+\.?)(?:[eE][+-]?\d+)?)|((?!\d)(?:(?!\s)[$\w\u0080-\uFFFF]|\\u[\da-fA-F]{4}|\\u\{[\da-fA-F]+\})+)|(--|\+\+|&&|\|\||=>|\.{3}|(?:[+\-/%&|^]|\*{1,2}|<{1,2}|>{1,3}|!=?|={1,2})=?|[?~.,:;[\](){}])|(\s+)|(^$|[\s\S])/g;
 
-var commonPlugins = [
-  'asyncGenerators',
-  'bigInt',
-  'classProperties',
-  'classPrivateProperties',
-  'classPrivateMethods',
-  'decorators-legacy',
-  // ['decorators', {'decoratorsBeforeExport': true}],
-  'doExpressions',
-  'dynamicImport',
-  'exportDefaultFrom',
-  'exportNamespaceFrom',
-  'functionBind',
-  'functionSent',
-  'importMeta',
-  'logicalAssignment',
-  'nullishCoalescingOperator',
-  'numericSeparator',
-  'objectRestSpread',
-  'optionalCatchBinding',
-  'optionalChaining',
-  'partialApplication',
-  // ['pipelineOperator', {proposal: 'minimal'}],
-  'throwExpressions',
-  'topLevelAwait'
-];
+module.exports = function(code) {
+  if (code === '') return [];
+  regex.lastIndex = 0;
 
-module.exports = function(code, options) {
-  var plugins = commonPlugins.slice(0);
-  if (!(options && options.noJsx)) plugins.push('jsx');
-  if (!(options && options.noTypeScript)) plugins.push('typescript');
+  let m, lastLine = 1, lastColumn = 0, lastPos = 0;
+  const fullTokens = [];
 
-  var tokens = parser.parse(code, {
-    sourceType: 'module',
-    plugins: plugins,
-    tokens: true
-  }).tokens;
+  while ((m = regex.exec(code)) !== null) {
+    const tokenStr = m[0];
 
-  var i = 0, ii = tokens.length, fullTokens = [], token, lastToken;
+    fullTokens.push({
+      value: tokenStr,
+      start: lastPos,
+      end: lastPos + tokenStr.length,
+      line: lastLine,
+      column: lastColumn
+    });
 
-  for (; i < ii; i++) {
-    token = {
-      value: code.slice(tokens[i].start, tokens[i].end),
-      start: tokens[i].start,
-      end: tokens[i].end,
-      line: tokens[i].loc.start.line,
-      column: tokens[i].loc.start.column,
-      endLine: tokens[i].loc.end.line,
-      endColumn: tokens[i].loc.end.column
-    };
-
-    if (token.start === token.end) continue;
-
-    if (i === 0) {
-      if (token.start !== 0) {
-        // leading gap (e.g. white spaces, comments)
-        fullTokens.push({
-          value: code.slice(0, token.start),
-          start: 0,
-          end: token.start,
-          line: 1,
-          column: 0
-        });
+    lastPos += tokenStr.length;
+    for (let c of tokenStr) {
+      if (c === '\n') { // only support \r\n or \n
+        lastLine += 1;
+        lastColumn = 0;
+      } else {
+        lastColumn += 1;
       }
-    } else if (token.start !== lastToken.end) {
-      // gap (e.g. white spaces, comments)
-      fullTokens.push({
-        value: code.slice(lastToken.end, token.start),
-        start: lastToken.end,
-        end: token.start,
-        line: lastToken.endLine,
-        column: lastToken.endColumn
-      });
     }
-
-    lastToken = token;
-    fullTokens.push({
-      value: token.value,
-      start: token.start,
-      end: token.end,
-      line: token.line,
-      column: token.column
-    });
-  }
-
-  if (lastToken && code.length > lastToken.end) {
-    // tailing gap (e.g. white spaces, comments) into previous token
-    fullTokens.push({
-      value: code.slice(lastToken.end),
-      start: lastToken.end,
-      end: code.length,
-      line: lastToken.endLine,
-      column: lastToken.endColumn
-    });
-  }
-
-  if (fullTokens.length === 0 && code.length) {
-    // code contains non-empty string but no valid js like /* empty */
-    fullTokens.push({
-      value: code,
-      start: 0,
-      end: code.length,
-      line: 1,
-      column: 0
-    });
   }
 
   return fullTokens;
