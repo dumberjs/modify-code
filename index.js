@@ -1,11 +1,11 @@
-var tokenize = require('./tokenize');
-var SourceNode = require('source-map').SourceNode;
+const tokenize = require('./tokenize');
+const SourceNode = require('source-map').SourceNode;
 
 exports.__esModule = true;
-exports['default'] = function(code, filePath, options) {
+exports['default'] = function(code, filePath) {
   // the file name to be used in sourcemap sources and file fields
   filePath = (filePath || 'file.js').replace(/\\/g, '/');
-  var mutations = [];
+  const mutations = [];
 
   function checkIndex(idx) {
     if (typeof idx !== 'number' || idx < 0) {
@@ -17,8 +17,9 @@ exports['default'] = function(code, filePath, options) {
   }
 
   function checkOverlap(start, end, str) {
-    var i = 0, ii = mutations.length, mutation;
-    for (; i < ii; i++) {
+    const ii = mutations.length;
+    let i, mutation;
+    for (i = 0; i < ii; i++) {
       mutation = mutations[i];
       // don't check insertion against insertion
       if (mutation.start === mutation.end && start === end) continue;
@@ -33,7 +34,7 @@ exports['default'] = function(code, filePath, options) {
   }
 
   function replace(start, end, str) {
-    var existing;
+    let existing;
     checkIndex(start);
     checkIndex(end);
     checkOverlap(start, end, str);
@@ -57,7 +58,7 @@ exports['default'] = function(code, filePath, options) {
     return modifyCode;
   }
 
-  var modifyCode = {};
+  const modifyCode = {};
   modifyCode.prepend = function(str) {
     return replace(0, 0, str);
   };
@@ -79,12 +80,13 @@ exports['default'] = function(code, filePath, options) {
   };
 
   modifyCode.transform = function() {
-    var ms = compactMutations(mutations);
-    var i = 0, ti = 0, ii = ms.length, newTokens = [];
-    var m, offset, offset2, merged, isInsertion;
-    var tokens = tokenize(code, options);
+    const ms = compactMutations(mutations);
+    const ii = ms.length;
+    const newTokens = [];
+    const tokens = tokenize(code);
+    let i, ti = 0, m, offset, offset2, merged, isInsertion;
 
-    for (; i < ii; i++) {
+    for (i = 0; i < ii; i++) {
       m = ms[i];
       isInsertion = m.start === m.end;
 
@@ -159,11 +161,11 @@ exports['default'] = function(code, filePath, options) {
       ti++;
     }
 
-    var node = new SourceNode(null, null, null, newTokens.map(function(t) {
+    const node = new SourceNode(null, null, null, newTokens.map(function(t) {
       return new SourceNode(t.line, t.column, filePath, t.value);
     }));
 
-    var result = node.toStringWithSourceMap({file: filePath});
+    const result = node.toStringWithSourceMap({file: filePath});
     result.map.setSourceContent(filePath, code);
 
     return {
@@ -181,18 +183,19 @@ function panic(mutation) {
 }
 
 function compactMutations(mutations) {
-  var _ms = Array.from(mutations);
+  const _ms = Array.from(mutations);
 
   _ms.sort(function(a, b) {
-    var sdiff = a.start - b.start;
+    const sdiff = a.start - b.start;
     if (sdiff === 0) {
       return a.end - b.end;
     }
     return sdiff;
   });
 
-  var compact = [];
-  var i = 0, ii = _ms.length, lastOne, m;
+  const compact = [];
+  const ii = _ms.length;
+  let i = 0, lastOne, m;
   for (; i < ii; i++) {
     m = {
       start: _ms[i].start,

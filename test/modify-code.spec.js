@@ -577,7 +577,7 @@ test('modify-code can chain mutation calls, in different order', function(t) {
 });
 
 test('modify-code prepends, replaces and inserts at adjacent positions', function(t) {
-  var m = modify("import { a } from 'foo';@a() export class B {}", 'some.js', {noJsx: true, noTypeScript: true});
+  var m = modify("import { a } from 'foo';@a() export class B {}", 'some.js');
   // prepend import
   m.prepend("import vf from './some.html';\n")
   // rewrite import
@@ -674,20 +674,3 @@ test('modify-code mutates jsx and typescript code', function(t) {
   });
   t.end();
 });
-
-test('modify-code can turn off jsx', function(t) {
-  var m = modify('export default (name: string) => <p>{name}</p>;', 'some.js', {noJsx: true});
-  m.prepend("import React from 'react';\n");
-
-  t.throws(function() {m.transform();});
-  t.end();
-});
-
-test('modify-code can turn off typescript', function(t) {
-  var m = modify('export default (name: string) => <p>{name}</p>;', 'some.js', {noTypeScript: true});
-  m.prepend("import React from 'react';\n");
-
-  t.throws(function() {m.transform();});
-  t.end();
-});
-
