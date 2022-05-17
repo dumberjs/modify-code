@@ -1,3 +1,17 @@
+# [2.0.0](https://github.com/dumberjs/modify-code/compare/v1.2.0...v2.0.0) (2022-05-17)
+
+
+### Bug Fixes
+
+* update source-map to fix issues on nodejs v18 ([dabd7e5](https://github.com/dumberjs/modify-code/commit/dabd7e515e720d9a051e67c8df1300404c8ae872))
+
+
+### BREAKING CHANGES
+
+* drop support of nodejs v8 and v10
+
+
+
 # [1.2.0](https://github.com/dumberjs/modify-code/compare/v1.1.0...v1.2.0) (2020-04-02)
 
 
