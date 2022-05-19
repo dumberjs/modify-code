@@ -50,6 +50,11 @@ const result = m.transform();
     sourcesContent: [ 'var a = require("a");\nexports.foo = a;\n' ]
   }
 }
+
+// generate code only without sourcemap
+const code = m.transformCodeOnly();
+// code is
+'/* modified */\nvar a = require("mock-a");a = \'#\' + a;exports.bar = a;/* end of modified */\n'
 ```
 
 ## JSX and TypeScript

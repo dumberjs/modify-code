@@ -16,7 +16,8 @@ test('modify-code supports empty code', function(t) {
       names: [],
       mappings: ''
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), '');
   t.end();
 });
 
@@ -37,7 +38,8 @@ test('modify-code supports mutating empty code', function(t) {
         ]
       ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), '/* hello */');
   t.end();
 });
 
@@ -61,7 +63,8 @@ test('modify-code supports mutating almost empty code', function(t) {
         ]
       ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), '\n/* hello */');
   t.end();
 });
 
@@ -89,7 +92,8 @@ test('modify-code supports mutating empty code, case2', function(t) {
         ]
       ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'define(function() {\n/* empty */\n});\n');
   t.end();
 });
 
@@ -112,7 +116,8 @@ test('modify-code outputs identity map', function(t) {
                             [ 8, 0, 0, 8 ],
                             [ 9, 0, 0, 9 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'var a = 1;');
   t.end();
 });
 
@@ -136,7 +141,8 @@ test('modify-code replaces one token', function(t) {
                             [ 12, 0, 0, 8 ],
                             [ 13, 0, 0, 9 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'var hello = 1;');
   t.end();
 });
 
@@ -159,7 +165,8 @@ test('modify-code deletes one token', function(t) {
                             [ 7, 0, 0, 7 ],
                             [ 8, 0, 0, 8 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'var a = 1');
   t.end();
 });
 
@@ -181,7 +188,8 @@ test('modify-code deletes multiple tokens', function(t) {
         ]
       ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), '1;');
   t.end();
 });
 
@@ -205,7 +213,8 @@ test('modify-code prepends content', function(t) {
                             [ 16, 0, 0, 8 ],
                             [ 17, 0, 0, 9 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), '/* c */ var a = 1;');
   t.end();
 });
 
@@ -230,7 +239,8 @@ test('modify-code prepends multiple contents', function(t) {
                             [ 24, 0, 0, 8 ],
                             [ 25, 0, 0, 9 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), '/* c */ /* d */ var a = 1;');
   t.end();
 });
 
@@ -254,7 +264,8 @@ test('modify-code appends content', function(t) {
                             [ 8, 0, 0, 8 ],
                             [ 9, 0, 0, 9 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'var a = 1; /* c */');
   t.end();
 });
 
@@ -279,7 +290,8 @@ test('modify-code appends multiple contents', function(t) {
                             [ 8, 0, 0, 8 ],
                             [ 9, 0, 0, 9 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'var a = 1; /* c */ /* d */');
   t.end();
 });
 
@@ -311,7 +323,8 @@ test('modify-code does two replacement, each for one token', function(t) {
                             [ 14, 0, 1, 12 ],
                             [ 15, 0, 1, 13 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'require("foo");\nrequire("bar");\n');
   t.end();
 });
 
@@ -343,7 +356,8 @@ test('modify-code does two replacement, each for one token, in different order',
                             [ 14, 0, 1, 12 ],
                             [ 15, 0, 1, 13 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'require("foo");\nrequire("bar");\n');
   t.end();
 });
 
@@ -372,7 +386,8 @@ test('modify-code replaces across multiple tokens', function(t) {
                             [ 9, 0, 1, 12 ],
                             [ 10, 0, 1, 13 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'require("foo");\nglobalB();\n');
   t.end();
 });
 
@@ -403,7 +418,8 @@ test('modify-code inserts content', function(t) {
                             [ 20, 0, 1, 12 ],
                             [ 21, 0, 1, 13 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'require("a");\nvar b = require("b");\n');
   t.end();
 });
 
@@ -433,7 +449,8 @@ test('modify-code inserts content inside a token', function(t) {
                             [ 16, 0, 1, 12 ],
                             [ 17, 0, 1, 13 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), 'require("a");\nrequire("mockb");\n');
   t.end();
 });
 
@@ -609,7 +626,8 @@ test('modify-code prepends, replaces and inserts at adjacent positions', functio
                             [ 54, 0, 0, 44 ],
                             [ 55, 0, 0, 45 ] ] ])
     }
-  })
+  });
+  t.equal(m.transformCodeOnly(), "import vf from './some.html';\nimport { a, c } from 'foo';@c(vf) @a() export class B {}");
   t.end();
 });
 
@@ -639,6 +657,7 @@ test('modify-code prepends and inserts around spaces', function(t) {
                             [ 18, 0, 1, 18 ] ] ])
     }
   });
+  t.equal(m.transformCodeOnly(), "import { view } from 'view';\n\n@view()\nexport class Foo {}");
   t.end();
 });
 
@@ -672,5 +691,6 @@ test('modify-code mutates jsx and typescript code', function(t) {
                         ])
     }
   });
+  t.equal(m.transformCodeOnly(), "import React from 'react';\nexport default (name: string) => <p>{name}</p>;");
   t.end();
 });

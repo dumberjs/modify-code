@@ -79,7 +79,7 @@ exports['default'] = function(code, filePath) {
     return replace(start, end, '');
   };
 
-  modifyCode.transform = function() {
+  function _sourceNode() {
     const ms = compactMutations(mutations);
     const ii = ms.length;
     const newTokens = [];
@@ -165,6 +165,11 @@ exports['default'] = function(code, filePath) {
       return new SourceNode(t.line, t.column, filePath, t.value);
     }));
 
+    return node;
+  }
+
+  modifyCode.transform = function () {
+    const node = _sourceNode();
     const result = node.toStringWithSourceMap({file: filePath});
     result.map.setSourceContent(filePath, code);
 
@@ -172,6 +177,12 @@ exports['default'] = function(code, filePath) {
       code: result.code,
       map: JSON.parse(result.map.toString())
     };
+  }
+
+
+  modifyCode.transformCodeOnly = function () {
+    const node = _sourceNode();
+    return node.toString();
   }
 
   return modifyCode;
