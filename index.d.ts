@@ -13,6 +13,6 @@ interface ModifyCode {
 }
 
 export interface ModifyCodeResult {
-  code: string,
-  map: RawSourceMap
+  code: string;
+  map: RawSourceMap;
 }
