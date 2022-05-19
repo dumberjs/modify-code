@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/dumberjs/modify-code/compare/v2.0.0...v2.1.0) (2022-05-19)
+
+
+### Features
+
+* add .transformCodeOnly() ([bc7dfd4](https://github.com/dumberjs/modify-code/commit/bc7dfd44b8c3d0d2a5656134c0988dc550ce31cf))
+
+
+
 # [2.0.0](https://github.com/dumberjs/modify-code/compare/v1.2.0...v2.0.0) (2022-05-17)
 
 
