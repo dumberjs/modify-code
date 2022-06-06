@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/dumberjs/modify-code#readme",
   "dependencies": {
-    "source-map": "^0.8.0-beta.0"
+    "source-map": "^0.7.4"
   },
   "devDependencies": {
     "browserify": "^17.0.0",
