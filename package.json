@@ -1,6 +1,6 @@
 {
   "name": "modify-code",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Modify JavaScript code, generate source map for the modification.",
   "main": "index.js",
   "types": "index.d.ts",
