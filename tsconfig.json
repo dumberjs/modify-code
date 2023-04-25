@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "moduleResolution": "nodenext"
+    },
+    "include": [
+        "./src/index.ts"
+    ]
+}

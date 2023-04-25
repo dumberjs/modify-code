@@ -4,12 +4,19 @@
 // matter in generating source map.
 const regex = /((['"])(?:(?!\2)[^\\\n\r]|\\(?:\r\n|[\s\S]))*(\2)?|`(?:[^`\\$]|\\[\s\S]|\$(?!\{)|\$\{(?:[^{}]|\{[^}]*\}?)*\}?)*(`)?)|(\/\/.*)|(\/\*(?:[^*]|\*(?!\/))*(\*\/)?)|(0[xX][\da-fA-F]+|0[oO][0-7]+|0[bB][01]+|(?:\d*\.\d+|\d+\.?)(?:[eE][+-]?\d+)?)|((?!\d)(?:(?!\s)[$\w\u0080-\uFFFF]|\\u[\da-fA-F]{4}|\\u\{[\da-fA-F]+\})+)|(--|\+\+|&&|\|\||=>|\.{3}|(?:[+\-/%&|^]|\*{1,2}|<{1,2}|>{1,3}|!=?|={1,2})=?|[?~.,:;[\](){}])|(\s+)|(^$|[\s\S])/g;
 
-module.exports = function(code) {
+export interface Token {
+  start: number;
+  end: number;
+  line: number;
+  column: number;
+  value: string;
+}
+export function tokenize(code: string): Token[] {
   if (code === '') return [];
   regex.lastIndex = 0;
 
   let m, lastLine = 1, lastColumn = 0, lastPos = 0;
-  const fullTokens = [];
+  const fullTokens: Token[] = [];
 
   while ((m = regex.exec(code)) !== null) {
     const tokenStr = m[0];
@@ -23,7 +30,7 @@ module.exports = function(code) {
     });
 
     lastPos += tokenStr.length;
-    for (let c of tokenStr) {
+    for (const c of tokenStr) {
       if (c === '\n') { // only support \r\n or \n
         lastLine += 1;
         lastColumn = 0;
@@ -34,4 +41,4 @@ module.exports = function(code) {
   }
 
   return fullTokens;
-};
+}

@@ -1,5 +1,5 @@
-var test = require('tape');
-var tokenize = require('../tokenize');
+import {test} from 'tape';
+import {tokenize} from '../tokenize';
 
 function tokensToCode(tokens) {
   return tokens.map(function(t) {return t.value;}).join('');

@@ -1,13 +1,71 @@
-const tokenize = require('./tokenize');
-const SourceNode = require('source-map').SourceNode;
+import {tokenize, type Token} from './tokenize.js';
+import {SourceNode, type RawSourceMap} from 'source-map';
 
-exports.__esModule = true;
-exports['default'] = function(code, filePath) {
+interface ModifyCode {
+  prepend(str: string): ModifyCode;
+  append(str: string): ModifyCode;
+  insert(start: number, str: string): ModifyCode;
+  replace(start: number, end: number, str: string): ModifyCode;
+  delete(start: number, end: number): ModifyCode;
+  transform(): ModifyCodeResult;
+  transformCodeOnly(): string;
+}
+
+interface Mutation {
+  start: number;
+  end: number;
+  value: string;
+}
+
+export interface ModifyCodeResult {
+  code: string;
+  map: RawSourceMap;
+}
+
+function panic(mutation: Mutation) {
+  throw new Error('Panic! mutation: start=' + mutation.start +
+    ' end=' + mutation.end + ' str=' + mutation.value);
+}
+
+function compactMutations(mutations: Mutation[]): Mutation[] {
+  const _ms = Array.from(mutations);
+
+  _ms.sort(function(a, b) {
+    const sdiff = a.start - b.start;
+    if (sdiff === 0) {
+      return a.end - b.end;
+    }
+    return sdiff;
+  });
+
+  const compact: Mutation[] = [];
+  const ii = _ms.length;
+  let i = 0, lastOne: Mutation | undefined, m: Mutation;
+  for (; i < ii; i++) {
+    m = {
+      start: _ms[i].start,
+      end: _ms[i].end,
+      value: _ms[i].value
+    };
+
+    if (lastOne && lastOne.end === m.start) {
+      // merge to last one
+      lastOne.end = m.end;
+      lastOne.value += m.value;
+    } else {
+      compact.push(m);
+      lastOne = m;
+    }
+  }
+  return compact;
+}
+
+export default function(code: string, filePath?: string): ModifyCode {
   // the file name to be used in sourcemap sources and file fields
-  filePath = (filePath || 'file.js').replace(/\\/g, '/');
-  const mutations = [];
+  const fp = (filePath || 'file.js').replace(/\\/g, '/');
+  const mutations: Mutation[] = [];
 
-  function checkIndex(idx) {
+  function checkIndex(idx: number): void {
     if (typeof idx !== 'number' || idx < 0) {
       throw new Error('index: ' + JSON.stringify(idx) + ' is not a valid index');
     }
@@ -16,7 +74,7 @@ exports['default'] = function(code, filePath) {
     }
   }
 
-  function checkOverlap(start, end, str) {
+  function checkOverlap(start: number, end: number, str: string): void {
     const ii = mutations.length;
     let i, mutation;
     for (i = 0; i < ii; i++) {
@@ -33,7 +91,7 @@ exports['default'] = function(code, filePath) {
     }
   }
 
-  function replace(start, end, str) {
+  function replace(start: number, end: number, str: string): ModifyCode {
     let existing;
     checkIndex(start);
     checkIndex(end);
@@ -58,31 +116,10 @@ exports['default'] = function(code, filePath) {
     return modifyCode;
   }
 
-  const modifyCode = {};
-  modifyCode.prepend = function(str) {
-    return replace(0, 0, str);
-  };
-
-  modifyCode.append = function(str) {
-    return replace(code.length, code.length, str);
-  };
-
-  modifyCode.insert = function(start, str) {
-    return replace(start, start, str);
-  };
-
-  modifyCode.replace = function(start, end, str) {
-    return replace(start, end, str);
-  };
-
-  modifyCode.delete = function(start, end) {
-    return replace(start, end, '');
-  };
-
-  function _sourceNode() {
+  function sourceNode() {
     const ms = compactMutations(mutations);
     const ii = ms.length;
-    const newTokens = [];
+    const newTokens: Token[] = [];
     const tokens = tokenize(code);
     let i, ti = 0, m, offset, offset2, merged, isInsertion;
 
@@ -162,66 +199,43 @@ exports['default'] = function(code, filePath) {
     }
 
     const node = new SourceNode(null, null, null, newTokens.map(function(t) {
-      return new SourceNode(t.line, t.column, filePath, t.value);
+      return new SourceNode(t.line, t.column, fp, t.value);
     }));
 
     return node;
   }
 
-  modifyCode.transform = function () {
-    const node = _sourceNode();
-    const result = node.toStringWithSourceMap({file: filePath});
-    result.map.setSourceContent(filePath, code);
+  const modifyCode: ModifyCode = {
+    prepend: function(str: string): ModifyCode {
+      return replace(0, 0, str);
+    },
+    append: function(str: string): ModifyCode {
+      return replace(code.length, code.length, str);
+    },
+    insert: function(start: number, str: string): ModifyCode {
+      return replace(start, start, str);
+    },
+    replace: function(start: number, end: number, str: string): ModifyCode {
+      return replace(start, end, str);
+    },
+    delete: function(start: number, end: number): ModifyCode {
+      return replace(start, end, '');
+    },
+    transform: function () {
+      const node = sourceNode();
+      const result = node.toStringWithSourceMap({file: filePath});
+      result.map.setSourceContent(fp, code);
 
-    return {
-      code: result.code,
-      map: JSON.parse(result.map.toString())
-    };
-  }
-
-
-  modifyCode.transformCodeOnly = function () {
-    const node = _sourceNode();
-    return node.toString();
-  }
+      return {
+        code: result.code,
+        map: JSON.parse(result.map.toString())
+      };
+    },
+    transformCodeOnly: function () {
+      const node = sourceNode();
+      return node.toString();
+    }
+  };
 
   return modifyCode;
-};
-
-function panic(mutation) {
-  throw new Error('Panic! mutation: start=' + mutation.start +
-    ' end=' + mutation.end + ' str=' + mutation.value);
-}
-
-function compactMutations(mutations) {
-  const _ms = Array.from(mutations);
-
-  _ms.sort(function(a, b) {
-    const sdiff = a.start - b.start;
-    if (sdiff === 0) {
-      return a.end - b.end;
-    }
-    return sdiff;
-  });
-
-  const compact = [];
-  const ii = _ms.length;
-  let i = 0, lastOne, m;
-  for (; i < ii; i++) {
-    m = {
-      start: _ms[i].start,
-      end: _ms[i].end,
-      value: _ms[i].value
-    };
-
-    if (lastOne && lastOne.end === m.start) {
-      // merge to last one
-      lastOne.end = m.end;
-      lastOne.value += m.value;
-    } else {
-      compact.push(m);
-      lastOne = m;
-    }
-  }
-  return compact;
 }

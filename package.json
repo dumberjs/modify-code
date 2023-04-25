@@ -18,7 +18,9 @@
     "postversion": "git push && git push --tags && npm publish",
     "coverage": "nyc --reporter=lcov tape \"test/*.js\"",
     "node-test": "tape \"test/*.js\"",
-    "browser-test": "browserify test/modify-code.spec.js test/tokenize.spec.js | browser-do --tap"
+    "browser-test": "browserify test/modify-code.spec.js test/tokenize.spec.js | browser-do --tap",
+    "build": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
+    "prebuild": "rimraf -rf ./dist"
   },
   "repository": {
     "type": "git",
@@ -37,12 +39,17 @@
     "source-map": "^0.7.4"
   },
   "devDependencies": {
+    "@types/node": "^18.16.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "browser-do": "^4.1.0",
     "browserify": "^17.0.0",
     "eslint": "^8.39.0",
     "nyc": "^15.1.0",
+    "rimraf": "^5.0.0",
     "sourcemap-codec": "^1.4.8",
     "standard-changelog": "^2.0.27",
     "tape": "^5.6.3",
-    "browser-do": "^4.1.0"
+    "typescript": "^5.0.4"
   }
 }
