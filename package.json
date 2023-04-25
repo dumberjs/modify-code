@@ -38,11 +38,11 @@
   },
   "devDependencies": {
     "browserify": "^17.0.0",
-    "eslint": "^8.15.0",
+    "eslint": "^8.39.0",
     "nyc": "^15.1.0",
     "sourcemap-codec": "^1.4.8",
     "standard-changelog": "^2.0.27",
-    "tape": "^5.5.3",
+    "tape": "^5.6.3",
     "browser-do": "^4.1.0"
   }
 }
