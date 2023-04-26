@@ -1,3 +1,12 @@
+## [2.1.3](https://github.com/dumberjs/modify-code/compare/v2.1.2...v2.1.3) (2023-04-26)
+
+
+### Bug Fixes
+
+* **build:** add esm to published file ([a8ab384](https://github.com/dumberjs/modify-code/commit/a8ab384db6fceada292a4af0b342d70b37b37eb5))
+
+
+
 ## [2.1.2](https://github.com/dumberjs/modify-code/compare/v2.1.1...v2.1.2) (2023-04-25)
 
 
