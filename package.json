@@ -10,6 +10,7 @@
   "types": "index.d.ts",
   "files": [
     "index.js",
+    "esm.mjs",
     "index.d.ts",
     "tokenize.js"
   ],
